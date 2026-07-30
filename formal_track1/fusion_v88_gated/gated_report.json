@@ -1,0 +1,62 @@
+{
+  "v88_d1gate03_d2open": {
+    "zip": "result_v88_d1gate03_d2open.zip",
+    "size_mb": 47.954482078552246,
+    "dataset1": {
+      "switch_rate_requested": 0.03,
+      "switch_rows": 1832,
+      "switch_rows_rate": 0.03000769848159735,
+      "top1_ours_rate": 0.9699923015184027,
+      "top1_open_rate": 0.8422466462465807,
+      "top1_neither_rate": 0.0,
+      "ours_open_top1_agreement": 0.8122389477649834,
+      "delta_threshold": 0.3113832473754883
+    },
+    "dataset2_source": "open"
+  },
+  "v89_d1gate05_d2open": {
+    "zip": "result_v89_d1gate05_d2open.zip",
+    "size_mb": 47.953890800476074,
+    "dataset1": {
+      "switch_rate_requested": 0.05,
+      "switch_rows": 3053,
+      "switch_rows_rate": 0.05000737088663576,
+      "top1_ours_rate": 0.9499926291133642,
+      "top1_open_rate": 0.8622463186516192,
+      "top1_neither_rate": 0.0,
+      "ours_open_top1_agreement": 0.8122389477649834,
+      "delta_threshold": 0.2440153956413269
+    },
+    "dataset2_source": "open"
+  },
+  "v90_d1gate08_d2open": {
+    "zip": "result_v90_d1gate08_d2open.zip",
+    "size_mb": 47.95319366455078,
+    "dataset1": {
+      "switch_rate_requested": 0.08,
+      "switch_rows": 4884,
+      "switch_rows_rate": 0.07999868962015365,
+      "top1_ours_rate": 0.9200013103798463,
+      "top1_open_rate": 0.8922376373851371,
+      "top1_neither_rate": 0.0,
+      "ours_open_top1_agreement": 0.8122389477649834,
+      "delta_threshold": 0.22661373019218445
+    },
+    "dataset2_source": "open"
+  },
+  "v91_d1gate05_d2rr20": {
+    "zip": "result_v91_d1gate05_d2rr20.zip",
+    "size_mb": 84.83790683746338,
+    "dataset1": {
+      "switch_rate_requested": 0.05,
+      "switch_rows": 3053,
+      "switch_rows_rate": 0.05000737088663576,
+      "top1_ours_rate": 0.9499926291133642,
+      "top1_open_rate": 0.8622463186516192,
+      "top1_neither_rate": 0.0,
+      "ours_open_top1_agreement": 0.8122389477649834,
+      "delta_threshold": 0.2440153956413269
+    },
+    "dataset2_source": "rr20"
+  }
+}

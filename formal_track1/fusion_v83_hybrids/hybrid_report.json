@@ -1,0 +1,98 @@
+{
+  "v83_d1v69_d2open": {
+    "zip": "result_v83_d1v69_d2open.zip",
+    "size_mb": 49.811068534851074,
+    "rows": {
+      "dataset1.csv": 61051,
+      "dataset2.csv": 153420
+    },
+    "sources": {
+      "dataset1": "ours_zip",
+      "dataset2": "other_zip"
+    }
+  },
+  "v84_d1rr85_d2open": {
+    "zip": "result_v84_d1rr85_d2open.zip",
+    "size_mb": 48.01275634765625,
+    "rows": {
+      "dataset1.csv": 61051,
+      "dataset2.csv": 153420
+    },
+    "sources": {
+      "dataset1": "v71_dir",
+      "dataset2": "other_zip"
+    }
+  },
+  "v85_d1v69_d2rr20": {
+    "zip": "result_v85_d1v69_d2rr20.zip",
+    "size_mb": 86.69508457183838,
+    "rows": {
+      "dataset1.csv": 61051,
+      "dataset2.csv": 153420
+    },
+    "sources": {
+      "dataset1": "ours_zip",
+      "dataset2": "v71_dir"
+    }
+  },
+  "v86_d1rr90_d2open": {
+    "zip": "result_v86_d1rr90_d2open.zip",
+    "size_mb": 47.96920967102051,
+    "rows": {
+      "dataset1.csv": 61051,
+      "dataset2.csv": 153420
+    },
+    "sources": {
+      "dataset1": "v72_dir",
+      "dataset2": "other_zip"
+    }
+  },
+  "v87_d1v69_d2rr15": {
+    "zip": "result_v87_d1v69_d2rr15.zip",
+    "size_mb": 86.6961441040039,
+    "rows": {
+      "dataset1.csv": 61051,
+      "dataset2.csv": 153420
+    },
+    "sources": {
+      "dataset1": "ours_zip",
+      "dataset2": "v74_dir"
+    }
+  },
+  "v92_d1borda_d2open": {
+    "zip": "result_v92_d1borda_d2open.zip",
+    "size_mb": 49.87517166137695,
+    "rows": {
+      "dataset1.csv": 61051,
+      "dataset2.csv": 153420
+    },
+    "sources": {
+      "dataset1": "v75_dir",
+      "dataset2": "other_zip"
+    }
+  },
+  "v93_d1rrf20_d2open": {
+    "zip": "result_v93_d1rrf20_d2open.zip",
+    "size_mb": 50.45590305328369,
+    "rows": {
+      "dataset1.csv": 61051,
+      "dataset2.csv": 153420
+    },
+    "sources": {
+      "dataset1": "v76_dir",
+      "dataset2": "other_zip"
+    }
+  },
+  "v94_d1norm_d2open": {
+    "zip": "result_v94_d1norm_d2open.zip",
+    "size_mb": 49.65551567077637,
+    "rows": {
+      "dataset1.csv": 61051,
+      "dataset2.csv": 153420
+    },
+    "sources": {
+      "dataset1": "v82_dir",
+      "dataset2": "other_zip"
+    }
+  }
+}

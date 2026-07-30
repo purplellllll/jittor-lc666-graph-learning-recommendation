@@ -1,0 +1,20 @@
+﻿{
+    "started_from":  "V69 dataset1 V65 1200 trees full retrain + V62 dataset2 reuse",
+    "result_zip":  "formal_track1\\result_v69_d1v65_1200_d2v62_local.zip",
+    "dataset1":  {
+                     "profile":  "v65",
+                     "validation_mrr":  0.84561685589832847,
+                     "previous_v66_mrr":  0.845094,
+                     "gain_vs_v66":  0.0005228558983285
+                 },
+    "dataset2":  {
+                     "source":  "V62 reused dataset2.csv",
+                     "validation_mrr":  0.54960017378450332
+                 },
+    "local_total_mrr":  1.3952170296828319,
+    "validated":  {
+                      "zip_test":  "passed",
+                      "dataset1_lines":  61051,
+                      "dataset2_lines":  153420
+                  }
+}

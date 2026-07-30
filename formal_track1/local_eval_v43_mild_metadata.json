@@ -1,0 +1,505 @@
+{
+  "started_at": "2026-06-03 13:52:39",
+  "datasets": [
+    {
+      "dataset": "dataset2",
+      "rows": 153420,
+      "scorer": "ranker_eval_only",
+      "weights": {
+        "pair_count": 0.0,
+        "pair_recency": 0.0,
+        "dst_pop": 6.24,
+        "dst_recent": 17.784,
+        "dst_very_recent": 18.304000000000002,
+        "dst_recency": 0.25,
+        "test_freq": 3.51,
+        "recent_match": [
+          1.2,
+          0.9,
+          0.6,
+          0.35,
+          0.2
+        ],
+        "transition": [
+          3.6,
+          2.16,
+          1.2,
+          0.6,
+          0.3
+        ],
+        "transition_recency": [
+          1.8,
+          1.08,
+          0.6,
+          0.3,
+          0.12
+        ],
+        "skip_transition": [
+          7.2,
+          4.5,
+          2.7,
+          1.5,
+          0.75
+        ],
+        "skip_transition_recency": [
+          3.0,
+          1.8,
+          1.05,
+          0.6,
+          0.3
+        ],
+        "noise": 1e-05
+      },
+      "validation_mrr": 0.4614375531784852,
+      "ranker": {
+        "use_ranker": true,
+        "blend_alpha": 1.0,
+        "validation_mrr": 0.4614375531784852,
+        "base_validation_mrr": 0.4018002808238693,
+        "model_validation_mrr": 0.4614375531784852,
+        "candidate_mode": "row",
+        "train_groups": 54000,
+        "eval_groups": 6000,
+        "feature_names": [
+          "log_pair_cnt",
+          "pair_rec",
+          "log_rev_pair_cnt",
+          "log_dst_cnt",
+          "log_dst_recent85",
+          "log_dst_recent97",
+          "dst_rec",
+          "log_test_freq",
+          "log_src_cnt",
+          "log_dst_window_50",
+          "log_dst_window_70",
+          "log_dst_window_85",
+          "log_dst_window_90",
+          "log_dst_window_95",
+          "log_dst_window_97",
+          "log_dst_window_99",
+          "pair_count_row_norm",
+          "pair_count_inv_rank",
+          "pair_rec_row_norm",
+          "dst_count_row_norm",
+          "dst_recent_row_norm",
+          "dst_very_recent_row_norm",
+          "test_freq_row_norm",
+          "dst_count_inv_rank",
+          "dst_recent_inv_rank",
+          "dst_very_recent_inv_rank",
+          "test_freq_inv_rank",
+          "log_skip_cnt_0",
+          "skip_rec_0",
+          "log_rev_skip_cnt_0",
+          "rev_skip_rec_0",
+          "log_skip_cnt_1",
+          "skip_rec_1",
+          "log_rev_skip_cnt_1",
+          "rev_skip_rec_1",
+          "log_skip_cnt_2",
+          "skip_rec_2",
+          "log_rev_skip_cnt_2",
+          "rev_skip_rec_2",
+          "log_skip_cnt_3",
+          "skip_rec_3",
+          "log_rev_skip_cnt_3",
+          "rev_skip_rec_3",
+          "log_skip_cnt_4",
+          "skip_rec_4",
+          "log_rev_skip_cnt_4",
+          "rev_skip_rec_4",
+          "log_skip_cnt_5",
+          "skip_rec_5",
+          "log_rev_skip_cnt_5",
+          "rev_skip_rec_5",
+          "log_skip_cnt_6",
+          "skip_rec_6",
+          "log_rev_skip_cnt_6",
+          "rev_skip_rec_6",
+          "log_skip_cnt_7",
+          "skip_rec_7",
+          "log_rev_skip_cnt_7",
+          "rev_skip_rec_7",
+          "log_skip_cnt_8",
+          "skip_rec_8",
+          "log_rev_skip_cnt_8",
+          "rev_skip_rec_8",
+          "log_skip_cnt_9",
+          "skip_rec_9",
+          "log_rev_skip_cnt_9",
+          "rev_skip_rec_9",
+          "v18_score",
+          "v18_norm",
+          "v18_inv_rank",
+          "v18_zscore"
+        ],
+        "raw_feature_names": [
+          "log_pair_cnt",
+          "pair_rec",
+          "log_rev_pair_cnt",
+          "rev_pair_rec",
+          "log_dst_cnt",
+          "log_dst_recent85",
+          "log_dst_recent97",
+          "dst_rec",
+          "log_test_freq",
+          "log_src_cnt",
+          "src_rec",
+          "log_cand_src_cnt",
+          "cand_src_rec",
+          "time_norm",
+          "log_dst_window_50",
+          "log_dst_window_70",
+          "log_dst_window_85",
+          "log_dst_window_90",
+          "log_dst_window_95",
+          "log_dst_window_97",
+          "log_dst_window_99",
+          "log_test_src_cand_freq",
+          "test_src_cand_row_norm",
+          "test_src_cand_inv_rank",
+          "pair_count_row_norm",
+          "pair_count_inv_rank",
+          "pair_rec_row_norm",
+          "rev_pair_count_row_norm",
+          "rev_pair_count_inv_rank",
+          "dst_vs_src_log_ratio",
+          "dst_vs_cand_src_log_ratio",
+          "dst_recent_gap",
+          "dst_very_recent_gap",
+          "dst_count_row_norm",
+          "dst_recent_row_norm",
+          "dst_very_recent_row_norm",
+          "test_freq_row_norm",
+          "cand_src_count_row_norm",
+          "dst_count_inv_rank",
+          "dst_recent_inv_rank",
+          "dst_very_recent_inv_rank",
+          "test_freq_inv_rank",
+          "cand_src_count_inv_rank",
+          "recent_common_count",
+          "recent_common_weight",
+          "recent_common_src_decay",
+          "recent_common_cand_decay",
+          "recent_common_has",
+          "recent_common_row_norm",
+          "recent_common_inv_rank",
+          "cand_recent_has_src",
+          "cand_recent_src_weight",
+          "recent_match_0",
+          "recent_match_1",
+          "recent_match_2",
+          "recent_match_3",
+          "recent_match_4",
+          "recent_match_5",
+          "recent_match_6",
+          "recent_match_7",
+          "recent_match_8",
+          "recent_match_9",
+          "log_trans_cnt_0",
+          "trans_rec_0",
+          "log_skip_cnt_0",
+          "skip_rec_0",
+          "log_rev_trans_cnt_0",
+          "rev_trans_rec_0",
+          "log_rev_skip_cnt_0",
+          "rev_skip_rec_0",
+          "log_trans_cnt_1",
+          "trans_rec_1",
+          "log_skip_cnt_1",
+          "skip_rec_1",
+          "log_rev_trans_cnt_1",
+          "rev_trans_rec_1",
+          "log_rev_skip_cnt_1",
+          "rev_skip_rec_1",
+          "log_trans_cnt_2",
+          "trans_rec_2",
+          "log_skip_cnt_2",
+          "skip_rec_2",
+          "log_rev_trans_cnt_2",
+          "rev_trans_rec_2",
+          "log_rev_skip_cnt_2",
+          "rev_skip_rec_2",
+          "log_trans_cnt_3",
+          "trans_rec_3",
+          "log_skip_cnt_3",
+          "skip_rec_3",
+          "log_rev_trans_cnt_3",
+          "rev_trans_rec_3",
+          "log_rev_skip_cnt_3",
+          "rev_skip_rec_3",
+          "log_trans_cnt_4",
+          "trans_rec_4",
+          "log_skip_cnt_4",
+          "skip_rec_4",
+          "log_rev_trans_cnt_4",
+          "rev_trans_rec_4",
+          "log_rev_skip_cnt_4",
+          "rev_skip_rec_4",
+          "log_trans_cnt_5",
+          "trans_rec_5",
+          "log_skip_cnt_5",
+          "skip_rec_5",
+          "log_rev_trans_cnt_5",
+          "rev_trans_rec_5",
+          "log_rev_skip_cnt_5",
+          "rev_skip_rec_5",
+          "log_trans_cnt_6",
+          "trans_rec_6",
+          "log_skip_cnt_6",
+          "skip_rec_6",
+          "log_rev_trans_cnt_6",
+          "rev_trans_rec_6",
+          "log_rev_skip_cnt_6",
+          "rev_skip_rec_6",
+          "log_trans_cnt_7",
+          "trans_rec_7",
+          "log_skip_cnt_7",
+          "skip_rec_7",
+          "log_rev_trans_cnt_7",
+          "rev_trans_rec_7",
+          "log_rev_skip_cnt_7",
+          "rev_skip_rec_7",
+          "log_trans_cnt_8",
+          "trans_rec_8",
+          "log_skip_cnt_8",
+          "skip_rec_8",
+          "log_rev_trans_cnt_8",
+          "rev_trans_rec_8",
+          "log_rev_skip_cnt_8",
+          "rev_skip_rec_8",
+          "log_trans_cnt_9",
+          "trans_rec_9",
+          "log_skip_cnt_9",
+          "skip_rec_9",
+          "log_rev_trans_cnt_9",
+          "rev_trans_rec_9",
+          "log_rev_skip_cnt_9",
+          "rev_skip_rec_9",
+          "v18_score",
+          "v18_norm",
+          "v18_inv_rank",
+          "v18_zscore",
+          "v18_margin_best",
+          "pos_norm",
+          "inv_pos"
+        ],
+        "selected_feature_count": 71,
+        "raw_feature_count": 149,
+        "ranker_no_pos": true,
+        "ranker_all_features": false,
+        "ranker_feature_profile": "mild",
+        "top_features": [
+          {
+            "feature": "v18_zscore",
+            "gain": 4955.42822265625
+          },
+          {
+            "feature": "v18_norm",
+            "gain": 3004.013916015625
+          },
+          {
+            "feature": "v18_inv_rank",
+            "gain": 1099.5870361328125
+          },
+          {
+            "feature": "log_dst_window_70",
+            "gain": 971.0648803710938
+          },
+          {
+            "feature": "log_dst_window_50",
+            "gain": 741.18408203125
+          },
+          {
+            "feature": "dst_rec",
+            "gain": 636.0447387695312
+          },
+          {
+            "feature": "dst_recent_inv_rank",
+            "gain": 520.4629516601562
+          },
+          {
+            "feature": "dst_recent_row_norm",
+            "gain": 336.896728515625
+          },
+          {
+            "feature": "pair_rec_row_norm",
+            "gain": 317.46783447265625
+          },
+          {
+            "feature": "pair_count_row_norm",
+            "gain": 153.77346801757812
+          },
+          {
+            "feature": "pair_count_inv_rank",
+            "gain": 153.21739196777344
+          },
+          {
+            "feature": "test_freq_inv_rank",
+            "gain": 150.83486938476562
+          },
+          {
+            "feature": "log_pair_cnt",
+            "gain": 147.77178955078125
+          },
+          {
+            "feature": "log_test_freq",
+            "gain": 138.3549346923828
+          },
+          {
+            "feature": "log_dst_window_90",
+            "gain": 125.85367584228516
+          },
+          {
+            "feature": "log_dst_recent85",
+            "gain": 125.40007019042969
+          },
+          {
+            "feature": "log_dst_window_99",
+            "gain": 110.51828002929688
+          },
+          {
+            "feature": "log_skip_cnt_3",
+            "gain": 100.65042877197266
+          },
+          {
+            "feature": "test_freq_row_norm",
+            "gain": 99.52590942382812
+          },
+          {
+            "feature": "log_src_cnt",
+            "gain": 98.9321517944336
+          },
+          {
+            "feature": "log_skip_cnt_0",
+            "gain": 97.286376953125
+          },
+          {
+            "feature": "log_rev_skip_cnt_8",
+            "gain": 85.2298812866211
+          },
+          {
+            "feature": "log_skip_cnt_8",
+            "gain": 74.81977844238281
+          },
+          {
+            "feature": "log_rev_skip_cnt_3",
+            "gain": 74.13933563232422
+          },
+          {
+            "feature": "rev_skip_rec_6",
+            "gain": 72.55864715576172
+          },
+          {
+            "feature": "log_rev_skip_cnt_1",
+            "gain": 72.1996841430664
+          },
+          {
+            "feature": "rev_skip_rec_4",
+            "gain": 71.29938507080078
+          },
+          {
+            "feature": "rev_skip_rec_1",
+            "gain": 70.6771469116211
+          },
+          {
+            "feature": "skip_rec_5",
+            "gain": 69.60753631591797
+          },
+          {
+            "feature": "log_rev_skip_cnt_0",
+            "gain": 68.56537628173828
+          },
+          {
+            "feature": "skip_rec_1",
+            "gain": 67.59431457519531
+          },
+          {
+            "feature": "rev_skip_rec_9",
+            "gain": 65.03460693359375
+          },
+          {
+            "feature": "skip_rec_3",
+            "gain": 64.27096557617188
+          },
+          {
+            "feature": "rev_skip_rec_5",
+            "gain": 62.212528228759766
+          },
+          {
+            "feature": "rev_skip_rec_8",
+            "gain": 62.10783004760742
+          },
+          {
+            "feature": "skip_rec_7",
+            "gain": 61.52181625366211
+          },
+          {
+            "feature": "skip_rec_6",
+            "gain": 60.1006965637207
+          },
+          {
+            "feature": "skip_rec_9",
+            "gain": 59.879058837890625
+          },
+          {
+            "feature": "log_dst_cnt",
+            "gain": 59.501190185546875
+          },
+          {
+            "feature": "log_rev_skip_cnt_4",
+            "gain": 59.48461151123047
+          }
+        ],
+        "base_weights": {
+          "pair_count": 0.0,
+          "pair_recency": 0.0,
+          "dst_pop": 6.24,
+          "dst_recent": 17.784,
+          "dst_very_recent": 18.304000000000002,
+          "dst_recency": 0.25,
+          "test_freq": 3.51,
+          "recent_match": [
+            1.2,
+            0.9,
+            0.6,
+            0.35,
+            0.2
+          ],
+          "transition": [
+            3.6,
+            2.16,
+            1.2,
+            0.6,
+            0.3
+          ],
+          "transition_recency": [
+            1.8,
+            1.08,
+            0.6,
+            0.3,
+            0.12
+          ],
+          "skip_transition": [
+            7.2,
+            4.5,
+            2.7,
+            1.5,
+            0.75
+          ],
+          "skip_transition_recency": [
+            3.0,
+            1.8,
+            1.05,
+            0.6,
+            0.3
+          ],
+          "noise": 1e-05
+        }
+      },
+      "output": null
+    }
+  ],
+  "finished_at": "2026-06-03 13:59:50",
+  "result_zip": null
+}

@@ -1,0 +1,20 @@
+﻿{
+    "started_from":  "V66 dataset1 V65 feature-add full retrain + V62 dataset2 reuse",
+    "result_zip":  "formal_track1\\result_v66_d1v65_d2v62_130k_850_ndcg_local.zip",
+    "dataset1":  {
+                     "profile":  "v65",
+                     "validation_mrr":  0.845094,
+                     "previous_v62_full_mrr":  0.84001338748104093,
+                     "gain_vs_v62":  0.0050806125189591
+                 },
+    "dataset2":  {
+                     "source":  "V62 reused dataset2.csv",
+                     "validation_mrr":  0.54960017378450332
+                 },
+    "local_total_mrr":  1.3946941737845033,
+    "validated":  {
+                      "zip_test":  "passed",
+                      "dataset1_lines":  61051,
+                      "dataset2_lines":  153420
+                  }
+}

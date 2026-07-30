@@ -1,0 +1,494 @@
+[12:14:17] Reading dataset2
+[12:14:18] Training XGBoost GPU ranker for dataset2
+[12:14:19]   selected 90/149 ranker features (no_pos=False)
+[12:14:19]   building pair aggregates
+[12:14:20]   building transition aggregates
+[12:14:21]   building skip-transition aggregates
+[12:14:25]   building node aggregates
+[12:14:25]   building recent source histories
+[12:14:27]   ranker train groups=54000, eval groups=6000
+[12:14:34]   built ranker features 1500/54000
+[12:14:42]   built ranker features 3000/54000
+[12:14:49]   built ranker features 4500/54000
+[12:14:56]   built ranker features 6000/54000
+[12:15:04]   built ranker features 7500/54000
+[12:15:11]   built ranker features 9000/54000
+[12:15:19]   built ranker features 10500/54000
+[12:15:26]   built ranker features 12000/54000
+[12:15:35]   built ranker features 13500/54000
+[12:15:43]   built ranker features 15000/54000
+[12:15:56]   built ranker features 16500/54000
+[12:16:10]   built ranker features 18000/54000
+[12:16:20]   built ranker features 19500/54000
+[12:16:28]   built ranker features 21000/54000
+[12:16:38]   built ranker features 22500/54000
+[12:16:47]   built ranker features 24000/54000
+[12:16:56]   built ranker features 25500/54000
+[12:17:05]   built ranker features 27000/54000
+[12:17:15]   built ranker features 28500/54000
+[12:17:24]   built ranker features 30000/54000
+[12:17:32]   built ranker features 31500/54000
+[12:17:41]   built ranker features 33000/54000
+[12:17:48]   built ranker features 34500/54000
+[12:17:56]   built ranker features 36000/54000
+[12:18:04]   built ranker features 37500/54000
+[12:18:12]   built ranker features 39000/54000
+[12:18:20]   built ranker features 40500/54000
+[12:18:28]   built ranker features 42000/54000
+[12:18:37]   built ranker features 43500/54000
+[12:18:45]   built ranker features 45000/54000
+[12:18:56]   built ranker features 46500/54000
+[12:19:06]   built ranker features 48000/54000
+[12:19:14]   built ranker features 49500/54000
+[12:19:22]   built ranker features 51000/54000
+[12:19:30]   built ranker features 52500/54000
+[12:19:38]   built ranker features 54000/54000
+[12:19:48]   built ranker features 1500/6000
+[12:19:57]   built ranker features 3000/6000
+[12:20:05]   built ranker features 4500/6000
+[12:20:13]   built ranker features 6000/6000
+[12:20:13]   V18 feature baseline MRR on ranker eval=0.401800
+[0]	validation_0-ndcg@10:0.45136
+[1]	validation_0-ndcg@10:0.51435
+[2]	validation_0-ndcg@10:0.52240
+[3]	validation_0-ndcg@10:0.52425
+[4]	validation_0-ndcg@10:0.52507
+[5]	validation_0-ndcg@10:0.52553
+[6]	validation_0-ndcg@10:0.52598
+[7]	validation_0-ndcg@10:0.52675
+[8]	validation_0-ndcg@10:0.52670
+[9]	validation_0-ndcg@10:0.52708
+[10]	validation_0-ndcg@10:0.52757
+[11]	validation_0-ndcg@10:0.52749
+[12]	validation_0-ndcg@10:0.52784
+[13]	validation_0-ndcg@10:0.52767
+[14]	validation_0-ndcg@10:0.52815
+[15]	validation_0-ndcg@10:0.52830
+[16]	validation_0-ndcg@10:0.52810
+[17]	validation_0-ndcg@10:0.52806
+[18]	validation_0-ndcg@10:0.52828
+[19]	validation_0-ndcg@10:0.52818
+[20]	validation_0-ndcg@10:0.52846
+[21]	validation_0-ndcg@10:0.52845
+[22]	validation_0-ndcg@10:0.52817
+[23]	validation_0-ndcg@10:0.52809
+[24]	validation_0-ndcg@10:0.52854
+[25]	validation_0-ndcg@10:0.52864
+[26]	validation_0-ndcg@10:0.52874
+[27]	validation_0-ndcg@10:0.52890
+[28]	validation_0-ndcg@10:0.52896
+[29]	validation_0-ndcg@10:0.52897
+[30]	validation_0-ndcg@10:0.52913
+[31]	validation_0-ndcg@10:0.52938
+[32]	validation_0-ndcg@10:0.52942
+[33]	validation_0-ndcg@10:0.52931
+[34]	validation_0-ndcg@10:0.52918
+[35]	validation_0-ndcg@10:0.52945
+[36]	validation_0-ndcg@10:0.52946
+[37]	validation_0-ndcg@10:0.52953
+[38]	validation_0-ndcg@10:0.52945
+[39]	validation_0-ndcg@10:0.52939
+[40]	validation_0-ndcg@10:0.52952
+[41]	validation_0-ndcg@10:0.52966
+[42]	validation_0-ndcg@10:0.52963
+[43]	validation_0-ndcg@10:0.52958
+[44]	validation_0-ndcg@10:0.52973
+[45]	validation_0-ndcg@10:0.52966
+[46]	validation_0-ndcg@10:0.52977
+[47]	validation_0-ndcg@10:0.52971
+[48]	validation_0-ndcg@10:0.52967
+[49]	validation_0-ndcg@10:0.52965
+[50]	validation_0-ndcg@10:0.52975
+[51]	validation_0-ndcg@10:0.52992
+[52]	validation_0-ndcg@10:0.53015
+[53]	validation_0-ndcg@10:0.53018
+[54]	validation_0-ndcg@10:0.53020
+[55]	validation_0-ndcg@10:0.53009
+[56]	validation_0-ndcg@10:0.53000
+[57]	validation_0-ndcg@10:0.52987
+[58]	validation_0-ndcg@10:0.53019
+[59]	validation_0-ndcg@10:0.53008
+[60]	validation_0-ndcg@10:0.53018
+[61]	validation_0-ndcg@10:0.53012
+[62]	validation_0-ndcg@10:0.53004
+[63]	validation_0-ndcg@10:0.53037
+[64]	validation_0-ndcg@10:0.53022
+[65]	validation_0-ndcg@10:0.53031
+[66]	validation_0-ndcg@10:0.53058
+[67]	validation_0-ndcg@10:0.53054
+[68]	validation_0-ndcg@10:0.53068
+[69]	validation_0-ndcg@10:0.53056
+[70]	validation_0-ndcg@10:0.53056
+[71]	validation_0-ndcg@10:0.53058
+[72]	validation_0-ndcg@10:0.53065
+[73]	validation_0-ndcg@10:0.53073
+[74]	validation_0-ndcg@10:0.53072
+[75]	validation_0-ndcg@10:0.53085
+[76]	validation_0-ndcg@10:0.53091
+[77]	validation_0-ndcg@10:0.53089
+[78]	validation_0-ndcg@10:0.53093
+[79]	validation_0-ndcg@10:0.53079
+[80]	validation_0-ndcg@10:0.53079
+[81]	validation_0-ndcg@10:0.53068
+[82]	validation_0-ndcg@10:0.53073
+[83]	validation_0-ndcg@10:0.53066
+[84]	validation_0-ndcg@10:0.53065
+[85]	validation_0-ndcg@10:0.53048
+[86]	validation_0-ndcg@10:0.53060
+[87]	validation_0-ndcg@10:0.53059
+[88]	validation_0-ndcg@10:0.53069
+[89]	validation_0-ndcg@10:0.53084
+[90]	validation_0-ndcg@10:0.53073
+[91]	validation_0-ndcg@10:0.53080
+[92]	validation_0-ndcg@10:0.53079
+[93]	validation_0-ndcg@10:0.53094
+[94]	validation_0-ndcg@10:0.53089
+[95]	validation_0-ndcg@10:0.53079
+[96]	validation_0-ndcg@10:0.53078
+[97]	validation_0-ndcg@10:0.53090
+[98]	validation_0-ndcg@10:0.53073
+[99]	validation_0-ndcg@10:0.53070
+[100]	validation_0-ndcg@10:0.53075
+[101]	validation_0-ndcg@10:0.53063
+[102]	validation_0-ndcg@10:0.53063
+[103]	validation_0-ndcg@10:0.53067
+[104]	validation_0-ndcg@10:0.53087
+[105]	validation_0-ndcg@10:0.53071
+[106]	validation_0-ndcg@10:0.53079
+[107]	validation_0-ndcg@10:0.53081
+[108]	validation_0-ndcg@10:0.53102
+[109]	validation_0-ndcg@10:0.53106
+[110]	validation_0-ndcg@10:0.53104
+[111]	validation_0-ndcg@10:0.53112
+[112]	validation_0-ndcg@10:0.53107
+[113]	validation_0-ndcg@10:0.53107
+[114]	validation_0-ndcg@10:0.53091
+[115]	validation_0-ndcg@10:0.53107
+[116]	validation_0-ndcg@10:0.53120
+[117]	validation_0-ndcg@10:0.53104
+[118]	validation_0-ndcg@10:0.53095
+[119]	validation_0-ndcg@10:0.53104
+[120]	validation_0-ndcg@10:0.53111
+[121]	validation_0-ndcg@10:0.53116
+[122]	validation_0-ndcg@10:0.53122
+[123]	validation_0-ndcg@10:0.53097
+[124]	validation_0-ndcg@10:0.53113
+[125]	validation_0-ndcg@10:0.53107
+[126]	validation_0-ndcg@10:0.53109
+[127]	validation_0-ndcg@10:0.53122
+[128]	validation_0-ndcg@10:0.53142
+[129]	validation_0-ndcg@10:0.53155
+[130]	validation_0-ndcg@10:0.53165
+[131]	validation_0-ndcg@10:0.53175
+[132]	validation_0-ndcg@10:0.53152
+[133]	validation_0-ndcg@10:0.53161
+[134]	validation_0-ndcg@10:0.53169
+[135]	validation_0-ndcg@10:0.53178
+[136]	validation_0-ndcg@10:0.53170
+[137]	validation_0-ndcg@10:0.53174
+[138]	validation_0-ndcg@10:0.53160
+[139]	validation_0-ndcg@10:0.53179
+[140]	validation_0-ndcg@10:0.53176
+[141]	validation_0-ndcg@10:0.53173
+[142]	validation_0-ndcg@10:0.53170
+[143]	validation_0-ndcg@10:0.53202
+[144]	validation_0-ndcg@10:0.53171
+[145]	validation_0-ndcg@10:0.53189
+[146]	validation_0-ndcg@10:0.53181
+[147]	validation_0-ndcg@10:0.53186
+[148]	validation_0-ndcg@10:0.53178
+[149]	validation_0-ndcg@10:0.53165
+[150]	validation_0-ndcg@10:0.53182
+[151]	validation_0-ndcg@10:0.53183
+[152]	validation_0-ndcg@10:0.53198
+[153]	validation_0-ndcg@10:0.53203
+[154]	validation_0-ndcg@10:0.53196
+[155]	validation_0-ndcg@10:0.53206
+[156]	validation_0-ndcg@10:0.53224
+[157]	validation_0-ndcg@10:0.53224
+[158]	validation_0-ndcg@10:0.53220
+[159]	validation_0-ndcg@10:0.53245
+[160]	validation_0-ndcg@10:0.53239
+[161]	validation_0-ndcg@10:0.53244
+[162]	validation_0-ndcg@10:0.53241
+[163]	validation_0-ndcg@10:0.53230
+[164]	validation_0-ndcg@10:0.53230
+[165]	validation_0-ndcg@10:0.53240
+[166]	validation_0-ndcg@10:0.53245
+[167]	validation_0-ndcg@10:0.53248
+[168]	validation_0-ndcg@10:0.53243
+[169]	validation_0-ndcg@10:0.53260
+[170]	validation_0-ndcg@10:0.53268
+[171]	validation_0-ndcg@10:0.53265
+[172]	validation_0-ndcg@10:0.53263
+[173]	validation_0-ndcg@10:0.53257
+[174]	validation_0-ndcg@10:0.53274
+[175]	validation_0-ndcg@10:0.53275
+[176]	validation_0-ndcg@10:0.53266
+[177]	validation_0-ndcg@10:0.53261
+[178]	validation_0-ndcg@10:0.53294
+[179]	validation_0-ndcg@10:0.53283
+[180]	validation_0-ndcg@10:0.53283
+[181]	validation_0-ndcg@10:0.53286
+[182]	validation_0-ndcg@10:0.53287
+[183]	validation_0-ndcg@10:0.53310
+[184]	validation_0-ndcg@10:0.53312
+[185]	validation_0-ndcg@10:0.53323
+[186]	validation_0-ndcg@10:0.53309
+[187]	validation_0-ndcg@10:0.53321
+[188]	validation_0-ndcg@10:0.53313
+[189]	validation_0-ndcg@10:0.53304
+[190]	validation_0-ndcg@10:0.53307
+[191]	validation_0-ndcg@10:0.53311
+[192]	validation_0-ndcg@10:0.53305
+[193]	validation_0-ndcg@10:0.53321
+[194]	validation_0-ndcg@10:0.53313
+[195]	validation_0-ndcg@10:0.53307
+[196]	validation_0-ndcg@10:0.53333
+[197]	validation_0-ndcg@10:0.53341
+[198]	validation_0-ndcg@10:0.53346
+[199]	validation_0-ndcg@10:0.53341
+[200]	validation_0-ndcg@10:0.53338
+[201]	validation_0-ndcg@10:0.53348
+[202]	validation_0-ndcg@10:0.53342
+[203]	validation_0-ndcg@10:0.53349
+[204]	validation_0-ndcg@10:0.53347
+[205]	validation_0-ndcg@10:0.53354
+[206]	validation_0-ndcg@10:0.53339
+[207]	validation_0-ndcg@10:0.53347
+[208]	validation_0-ndcg@10:0.53345
+[209]	validation_0-ndcg@10:0.53350
+[210]	validation_0-ndcg@10:0.53334
+[211]	validation_0-ndcg@10:0.53336
+[212]	validation_0-ndcg@10:0.53345
+[213]	validation_0-ndcg@10:0.53328
+[214]	validation_0-ndcg@10:0.53341
+[215]	validation_0-ndcg@10:0.53344
+[216]	validation_0-ndcg@10:0.53362
+[217]	validation_0-ndcg@10:0.53363
+[218]	validation_0-ndcg@10:0.53360
+[219]	validation_0-ndcg@10:0.53351
+[220]	validation_0-ndcg@10:0.53350
+[221]	validation_0-ndcg@10:0.53349
+[222]	validation_0-ndcg@10:0.53349
+[223]	validation_0-ndcg@10:0.53356
+[224]	validation_0-ndcg@10:0.53353
+[225]	validation_0-ndcg@10:0.53342
+[226]	validation_0-ndcg@10:0.53348
+[227]	validation_0-ndcg@10:0.53349
+[228]	validation_0-ndcg@10:0.53354
+[229]	validation_0-ndcg@10:0.53366
+[230]	validation_0-ndcg@10:0.53372
+[231]	validation_0-ndcg@10:0.53375
+[232]	validation_0-ndcg@10:0.53381
+[233]	validation_0-ndcg@10:0.53376
+[234]	validation_0-ndcg@10:0.53383
+[235]	validation_0-ndcg@10:0.53390
+[236]	validation_0-ndcg@10:0.53405
+[237]	validation_0-ndcg@10:0.53405
+[238]	validation_0-ndcg@10:0.53405
+[239]	validation_0-ndcg@10:0.53424
+[240]	validation_0-ndcg@10:0.53427
+[241]	validation_0-ndcg@10:0.53428
+[242]	validation_0-ndcg@10:0.53430
+[243]	validation_0-ndcg@10:0.53447
+[244]	validation_0-ndcg@10:0.53446
+[245]	validation_0-ndcg@10:0.53444
+[246]	validation_0-ndcg@10:0.53438
+[247]	validation_0-ndcg@10:0.53438
+[248]	validation_0-ndcg@10:0.53440
+[249]	validation_0-ndcg@10:0.53444
+[250]	validation_0-ndcg@10:0.53459
+[251]	validation_0-ndcg@10:0.53460
+[252]	validation_0-ndcg@10:0.53463
+[253]	validation_0-ndcg@10:0.53458
+[254]	validation_0-ndcg@10:0.53460
+[255]	validation_0-ndcg@10:0.53478
+[256]	validation_0-ndcg@10:0.53487
+[257]	validation_0-ndcg@10:0.53484
+[258]	validation_0-ndcg@10:0.53478
+[259]	validation_0-ndcg@10:0.53490
+[260]	validation_0-ndcg@10:0.53503
+[261]	validation_0-ndcg@10:0.53498
+[262]	validation_0-ndcg@10:0.53503
+[263]	validation_0-ndcg@10:0.53504
+[264]	validation_0-ndcg@10:0.53504
+[265]	validation_0-ndcg@10:0.53507
+[266]	validation_0-ndcg@10:0.53505
+[267]	validation_0-ndcg@10:0.53509
+[268]	validation_0-ndcg@10:0.53508
+[269]	validation_0-ndcg@10:0.53506
+[270]	validation_0-ndcg@10:0.53499
+[271]	validation_0-ndcg@10:0.53505
+[272]	validation_0-ndcg@10:0.53513
+[273]	validation_0-ndcg@10:0.53510
+[274]	validation_0-ndcg@10:0.53509
+[275]	validation_0-ndcg@10:0.53525
+[276]	validation_0-ndcg@10:0.53519
+[277]	validation_0-ndcg@10:0.53526
+[278]	validation_0-ndcg@10:0.53527
+[279]	validation_0-ndcg@10:0.53527
+[280]	validation_0-ndcg@10:0.53530
+[281]	validation_0-ndcg@10:0.53536
+[282]	validation_0-ndcg@10:0.53541
+[283]	validation_0-ndcg@10:0.53541
+[284]	validation_0-ndcg@10:0.53547
+[285]	validation_0-ndcg@10:0.53543
+[286]	validation_0-ndcg@10:0.53543
+[287]	validation_0-ndcg@10:0.53538
+[288]	validation_0-ndcg@10:0.53531
+[289]	validation_0-ndcg@10:0.53534
+[290]	validation_0-ndcg@10:0.53536
+[291]	validation_0-ndcg@10:0.53531
+[292]	validation_0-ndcg@10:0.53529
+[293]	validation_0-ndcg@10:0.53537
+[294]	validation_0-ndcg@10:0.53536
+[295]	validation_0-ndcg@10:0.53545
+[296]	validation_0-ndcg@10:0.53559
+[297]	validation_0-ndcg@10:0.53554
+[298]	validation_0-ndcg@10:0.53558
+[299]	validation_0-ndcg@10:0.53562
+[300]	validation_0-ndcg@10:0.53562
+[301]	validation_0-ndcg@10:0.53571
+[302]	validation_0-ndcg@10:0.53570
+[303]	validation_0-ndcg@10:0.53573
+[304]	validation_0-ndcg@10:0.53586
+[305]	validation_0-ndcg@10:0.53582
+[306]	validation_0-ndcg@10:0.53580
+[307]	validation_0-ndcg@10:0.53579
+[308]	validation_0-ndcg@10:0.53588
+[309]	validation_0-ndcg@10:0.53587
+[310]	validation_0-ndcg@10:0.53579
+[311]	validation_0-ndcg@10:0.53576
+[312]	validation_0-ndcg@10:0.53586
+[313]	validation_0-ndcg@10:0.53580
+[314]	validation_0-ndcg@10:0.53592
+[315]	validation_0-ndcg@10:0.53588
+[316]	validation_0-ndcg@10:0.53600
+[317]	validation_0-ndcg@10:0.53594
+[318]	validation_0-ndcg@10:0.53591
+[319]	validation_0-ndcg@10:0.53592
+[320]	validation_0-ndcg@10:0.53594
+[321]	validation_0-ndcg@10:0.53598
+[322]	validation_0-ndcg@10:0.53595
+[323]	validation_0-ndcg@10:0.53586
+[324]	validation_0-ndcg@10:0.53577
+[325]	validation_0-ndcg@10:0.53581
+[326]	validation_0-ndcg@10:0.53577
+[327]	validation_0-ndcg@10:0.53580
+[328]	validation_0-ndcg@10:0.53584
+[329]	validation_0-ndcg@10:0.53590
+[330]	validation_0-ndcg@10:0.53591
+[331]	validation_0-ndcg@10:0.53598
+[332]	validation_0-ndcg@10:0.53595
+[333]	validation_0-ndcg@10:0.53594
+[334]	validation_0-ndcg@10:0.53585
+[335]	validation_0-ndcg@10:0.53596
+[336]	validation_0-ndcg@10:0.53605
+[337]	validation_0-ndcg@10:0.53601
+[338]	validation_0-ndcg@10:0.53597
+[339]	validation_0-ndcg@10:0.53586
+[340]	validation_0-ndcg@10:0.53569
+[341]	validation_0-ndcg@10:0.53568
+[342]	validation_0-ndcg@10:0.53582
+[343]	validation_0-ndcg@10:0.53581
+[344]	validation_0-ndcg@10:0.53580
+[345]	validation_0-ndcg@10:0.53584
+[346]	validation_0-ndcg@10:0.53582
+[347]	validation_0-ndcg@10:0.53584
+[348]	validation_0-ndcg@10:0.53581
+[349]	validation_0-ndcg@10:0.53593
+[350]	validation_0-ndcg@10:0.53604
+[351]	validation_0-ndcg@10:0.53610
+[352]	validation_0-ndcg@10:0.53602
+[353]	validation_0-ndcg@10:0.53602
+[354]	validation_0-ndcg@10:0.53585
+[355]	validation_0-ndcg@10:0.53586
+[356]	validation_0-ndcg@10:0.53599
+[357]	validation_0-ndcg@10:0.53593
+[358]	validation_0-ndcg@10:0.53593
+[359]	validation_0-ndcg@10:0.53594
+[360]	validation_0-ndcg@10:0.53596
+[361]	validation_0-ndcg@10:0.53597
+[362]	validation_0-ndcg@10:0.53603
+[363]	validation_0-ndcg@10:0.53609
+[364]	validation_0-ndcg@10:0.53625
+[365]	validation_0-ndcg@10:0.53625
+[366]	validation_0-ndcg@10:0.53629
+[367]	validation_0-ndcg@10:0.53637
+[368]	validation_0-ndcg@10:0.53635
+[369]	validation_0-ndcg@10:0.53623
+[370]	validation_0-ndcg@10:0.53620
+[371]	validation_0-ndcg@10:0.53640
+[372]	validation_0-ndcg@10:0.53633
+[373]	validation_0-ndcg@10:0.53634
+[374]	validation_0-ndcg@10:0.53619
+[375]	validation_0-ndcg@10:0.53618
+[376]	validation_0-ndcg@10:0.53624
+[377]	validation_0-ndcg@10:0.53632
+[378]	validation_0-ndcg@10:0.53638
+[379]	validation_0-ndcg@10:0.53648
+[380]	validation_0-ndcg@10:0.53648
+[381]	validation_0-ndcg@10:0.53655
+[382]	validation_0-ndcg@10:0.53654
+[383]	validation_0-ndcg@10:0.53658
+[384]	validation_0-ndcg@10:0.53642
+[385]	validation_0-ndcg@10:0.53643
+[386]	validation_0-ndcg@10:0.53644
+[387]	validation_0-ndcg@10:0.53649
+[388]	validation_0-ndcg@10:0.53650
+[389]	validation_0-ndcg@10:0.53652
+[390]	validation_0-ndcg@10:0.53655
+[391]	validation_0-ndcg@10:0.53655
+[392]	validation_0-ndcg@10:0.53656
+[393]	validation_0-ndcg@10:0.53651
+[394]	validation_0-ndcg@10:0.53653
+[395]	validation_0-ndcg@10:0.53669
+[396]	validation_0-ndcg@10:0.53664
+[397]	validation_0-ndcg@10:0.53676
+[398]	validation_0-ndcg@10:0.53651
+[399]	validation_0-ndcg@10:0.53654
+[400]	validation_0-ndcg@10:0.53669
+[401]	validation_0-ndcg@10:0.53668
+[402]	validation_0-ndcg@10:0.53673
+[403]	validation_0-ndcg@10:0.53678
+[404]	validation_0-ndcg@10:0.53683
+[405]	validation_0-ndcg@10:0.53687
+[406]	validation_0-ndcg@10:0.53697
+[407]	validation_0-ndcg@10:0.53698
+[408]	validation_0-ndcg@10:0.53690
+[409]	validation_0-ndcg@10:0.53682
+[410]	validation_0-ndcg@10:0.53691
+[411]	validation_0-ndcg@10:0.53690
+[412]	validation_0-ndcg@10:0.53700
+[413]	validation_0-ndcg@10:0.53698
+[414]	validation_0-ndcg@10:0.53703
+[415]	validation_0-ndcg@10:0.53690
+[416]	validation_0-ndcg@10:0.53691
+[417]	validation_0-ndcg@10:0.53689
+[418]	validation_0-ndcg@10:0.53697
+[419]	validation_0-ndcg@10:0.53694
+[12:22:09]   raw ranker MRR on ranker eval=0.462497
+[12:22:09]   blend alpha=0.00 MRR=0.401800
+[12:22:09]   blend alpha=0.05 MRR=0.406300
+[12:22:09]   blend alpha=0.10 MRR=0.412488
+[12:22:09]   blend alpha=0.15 MRR=0.418910
+[12:22:09]   blend alpha=0.20 MRR=0.424225
+[12:22:10]   blend alpha=0.25 MRR=0.430438
+[12:22:10]   blend alpha=0.30 MRR=0.435749
+[12:22:10]   blend alpha=0.35 MRR=0.441038
+[12:22:10]   blend alpha=0.40 MRR=0.445627
+[12:22:10]   blend alpha=0.45 MRR=0.449444
+[12:22:10]   blend alpha=0.50 MRR=0.451637
+[12:22:10]   blend alpha=0.55 MRR=0.453031
+[12:22:10]   blend alpha=0.60 MRR=0.454914
+[12:22:10]   blend alpha=0.65 MRR=0.456141
+[12:22:10]   blend alpha=0.70 MRR=0.457553
+[12:22:10]   blend alpha=0.75 MRR=0.458534
+[12:22:10]   blend alpha=0.80 MRR=0.459289
+[12:22:10]   blend alpha=0.85 MRR=0.459863
+[12:22:10]   blend alpha=0.90 MRR=0.460814
+[12:22:10]   blend alpha=0.95 MRR=0.461445
+[12:22:10]   blend alpha=1.00 MRR=0.462497
+[12:22:10]   selected ranker use=True alpha=1.00 base=0.401800 best=0.462497
+[12:22:10] Done

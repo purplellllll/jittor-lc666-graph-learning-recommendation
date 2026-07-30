@@ -1,0 +1,590 @@
+[17:07:43] Reading dataset2
+[17:07:44] Training XGBoost GPU ranker for dataset2
+[17:07:45]   selected 102/174 ranker features (profile=v59, no_pos=True, all_features=False)
+[17:07:45]   enabling graph SVD features dim=32, n_iter=5
+[17:07:45]   building pair aggregates
+[17:07:46]   building transition aggregates
+[17:07:46]   building skip-transition aggregates
+[17:07:51]   building node aggregates
+[17:07:51]   building recent source histories
+[17:07:53]   building directed graph SVD embeddings dim=32
+[17:07:59]   ranker train groups=72000, eval groups=8000
+[17:08:07]   built ranker features 1500/72000
+[17:08:15]   built ranker features 3000/72000
+[17:08:23]   built ranker features 4500/72000
+[17:08:30]   built ranker features 6000/72000
+[17:08:38]   built ranker features 7500/72000
+[17:08:46]   built ranker features 9000/72000
+[17:08:54]   built ranker features 10500/72000
+[17:09:02]   built ranker features 12000/72000
+[17:09:10]   built ranker features 13500/72000
+[17:09:19]   built ranker features 15000/72000
+[17:09:27]   built ranker features 16500/72000
+[17:09:35]   built ranker features 18000/72000
+[17:09:43]   built ranker features 19500/72000
+[17:09:52]   built ranker features 21000/72000
+[17:10:00]   built ranker features 22500/72000
+[17:10:07]   built ranker features 24000/72000
+[17:10:15]   built ranker features 25500/72000
+[17:10:23]   built ranker features 27000/72000
+[17:10:31]   built ranker features 28500/72000
+[17:10:39]   built ranker features 30000/72000
+[17:10:47]   built ranker features 31500/72000
+[17:10:54]   built ranker features 33000/72000
+[17:11:02]   built ranker features 34500/72000
+[17:11:10]   built ranker features 36000/72000
+[17:11:18]   built ranker features 37500/72000
+[17:11:25]   built ranker features 39000/72000
+[17:11:33]   built ranker features 40500/72000
+[17:11:41]   built ranker features 42000/72000
+[17:11:49]   built ranker features 43500/72000
+[17:11:57]   built ranker features 45000/72000
+[17:12:04]   built ranker features 46500/72000
+[17:12:12]   built ranker features 48000/72000
+[17:12:20]   built ranker features 49500/72000
+[17:12:28]   built ranker features 51000/72000
+[17:12:36]   built ranker features 52500/72000
+[17:12:44]   built ranker features 54000/72000
+[17:12:52]   built ranker features 55500/72000
+[17:13:00]   built ranker features 57000/72000
+[17:13:07]   built ranker features 58500/72000
+[17:13:15]   built ranker features 60000/72000
+[17:13:23]   built ranker features 61500/72000
+[17:13:31]   built ranker features 63000/72000
+[17:13:39]   built ranker features 64500/72000
+[17:13:46]   built ranker features 66000/72000
+[17:13:54]   built ranker features 67500/72000
+[17:14:02]   built ranker features 69000/72000
+[17:14:10]   built ranker features 70500/72000
+[17:14:18]   built ranker features 72000/72000
+[17:14:26]   built ranker features 1500/8000
+[17:14:35]   built ranker features 3000/8000
+[17:14:42]   built ranker features 4500/8000
+[17:14:50]   built ranker features 6000/8000
+[17:14:58]   built ranker features 7500/8000
+[17:15:00]   built ranker features 8000/8000
+[17:15:00]   V18 feature baseline MRR on ranker eval=0.400312
+[0]	validation_0-ndcg@10:0.50782
+[1]	validation_0-ndcg@10:0.58468
+[2]	validation_0-ndcg@10:0.59301
+[3]	validation_0-ndcg@10:0.59547
+[4]	validation_0-ndcg@10:0.59729
+[5]	validation_0-ndcg@10:0.59708
+[6]	validation_0-ndcg@10:0.59802
+[7]	validation_0-ndcg@10:0.59898
+[8]	validation_0-ndcg@10:0.59870
+[9]	validation_0-ndcg@10:0.59918
+[10]	validation_0-ndcg@10:0.59961
+[11]	validation_0-ndcg@10:0.59981
+[12]	validation_0-ndcg@10:0.59899
+[13]	validation_0-ndcg@10:0.60022
+[14]	validation_0-ndcg@10:0.60106
+[15]	validation_0-ndcg@10:0.60156
+[16]	validation_0-ndcg@10:0.60224
+[17]	validation_0-ndcg@10:0.60247
+[18]	validation_0-ndcg@10:0.60314
+[19]	validation_0-ndcg@10:0.60253
+[20]	validation_0-ndcg@10:0.60281
+[21]	validation_0-ndcg@10:0.60262
+[22]	validation_0-ndcg@10:0.60269
+[23]	validation_0-ndcg@10:0.60317
+[24]	validation_0-ndcg@10:0.60385
+[25]	validation_0-ndcg@10:0.60439
+[26]	validation_0-ndcg@10:0.60400
+[27]	validation_0-ndcg@10:0.60439
+[28]	validation_0-ndcg@10:0.60451
+[29]	validation_0-ndcg@10:0.60520
+[30]	validation_0-ndcg@10:0.60521
+[31]	validation_0-ndcg@10:0.60473
+[32]	validation_0-ndcg@10:0.60513
+[33]	validation_0-ndcg@10:0.60505
+[34]	validation_0-ndcg@10:0.60528
+[35]	validation_0-ndcg@10:0.60486
+[36]	validation_0-ndcg@10:0.60540
+[37]	validation_0-ndcg@10:0.60533
+[38]	validation_0-ndcg@10:0.60536
+[39]	validation_0-ndcg@10:0.60529
+[40]	validation_0-ndcg@10:0.60535
+[41]	validation_0-ndcg@10:0.60552
+[42]	validation_0-ndcg@10:0.60584
+[43]	validation_0-ndcg@10:0.60576
+[44]	validation_0-ndcg@10:0.60609
+[45]	validation_0-ndcg@10:0.60650
+[46]	validation_0-ndcg@10:0.60690
+[47]	validation_0-ndcg@10:0.60711
+[48]	validation_0-ndcg@10:0.60715
+[49]	validation_0-ndcg@10:0.60754
+[50]	validation_0-ndcg@10:0.60750
+[51]	validation_0-ndcg@10:0.60747
+[52]	validation_0-ndcg@10:0.60776
+[53]	validation_0-ndcg@10:0.60795
+[54]	validation_0-ndcg@10:0.60791
+[55]	validation_0-ndcg@10:0.60781
+[56]	validation_0-ndcg@10:0.60756
+[57]	validation_0-ndcg@10:0.60760
+[58]	validation_0-ndcg@10:0.60792
+[59]	validation_0-ndcg@10:0.60797
+[60]	validation_0-ndcg@10:0.60787
+[61]	validation_0-ndcg@10:0.60782
+[62]	validation_0-ndcg@10:0.60793
+[63]	validation_0-ndcg@10:0.60769
+[64]	validation_0-ndcg@10:0.60776
+[65]	validation_0-ndcg@10:0.60808
+[66]	validation_0-ndcg@10:0.60827
+[67]	validation_0-ndcg@10:0.60809
+[68]	validation_0-ndcg@10:0.60807
+[69]	validation_0-ndcg@10:0.60844
+[70]	validation_0-ndcg@10:0.60843
+[71]	validation_0-ndcg@10:0.60895
+[72]	validation_0-ndcg@10:0.60898
+[73]	validation_0-ndcg@10:0.60881
+[74]	validation_0-ndcg@10:0.60889
+[75]	validation_0-ndcg@10:0.60888
+[76]	validation_0-ndcg@10:0.60890
+[77]	validation_0-ndcg@10:0.60851
+[78]	validation_0-ndcg@10:0.60889
+[79]	validation_0-ndcg@10:0.60909
+[80]	validation_0-ndcg@10:0.60914
+[81]	validation_0-ndcg@10:0.60910
+[82]	validation_0-ndcg@10:0.60900
+[83]	validation_0-ndcg@10:0.60928
+[84]	validation_0-ndcg@10:0.60921
+[85]	validation_0-ndcg@10:0.60901
+[86]	validation_0-ndcg@10:0.60907
+[87]	validation_0-ndcg@10:0.60897
+[88]	validation_0-ndcg@10:0.60872
+[89]	validation_0-ndcg@10:0.60886
+[90]	validation_0-ndcg@10:0.60904
+[91]	validation_0-ndcg@10:0.60907
+[92]	validation_0-ndcg@10:0.60922
+[93]	validation_0-ndcg@10:0.60898
+[94]	validation_0-ndcg@10:0.60961
+[95]	validation_0-ndcg@10:0.60960
+[96]	validation_0-ndcg@10:0.60959
+[97]	validation_0-ndcg@10:0.60984
+[98]	validation_0-ndcg@10:0.60996
+[99]	validation_0-ndcg@10:0.61020
+[100]	validation_0-ndcg@10:0.61047
+[101]	validation_0-ndcg@10:0.61057
+[102]	validation_0-ndcg@10:0.61048
+[103]	validation_0-ndcg@10:0.61061
+[104]	validation_0-ndcg@10:0.61073
+[105]	validation_0-ndcg@10:0.61088
+[106]	validation_0-ndcg@10:0.61084
+[107]	validation_0-ndcg@10:0.61067
+[108]	validation_0-ndcg@10:0.61041
+[109]	validation_0-ndcg@10:0.61046
+[110]	validation_0-ndcg@10:0.61056
+[111]	validation_0-ndcg@10:0.61049
+[112]	validation_0-ndcg@10:0.61039
+[113]	validation_0-ndcg@10:0.61059
+[114]	validation_0-ndcg@10:0.61035
+[115]	validation_0-ndcg@10:0.61053
+[116]	validation_0-ndcg@10:0.61080
+[117]	validation_0-ndcg@10:0.61067
+[118]	validation_0-ndcg@10:0.61063
+[119]	validation_0-ndcg@10:0.61065
+[120]	validation_0-ndcg@10:0.61080
+[121]	validation_0-ndcg@10:0.61049
+[122]	validation_0-ndcg@10:0.61068
+[123]	validation_0-ndcg@10:0.61080
+[124]	validation_0-ndcg@10:0.61072
+[125]	validation_0-ndcg@10:0.61068
+[126]	validation_0-ndcg@10:0.61086
+[127]	validation_0-ndcg@10:0.61056
+[128]	validation_0-ndcg@10:0.61072
+[129]	validation_0-ndcg@10:0.61081
+[130]	validation_0-ndcg@10:0.61103
+[131]	validation_0-ndcg@10:0.61102
+[132]	validation_0-ndcg@10:0.61097
+[133]	validation_0-ndcg@10:0.61089
+[134]	validation_0-ndcg@10:0.61103
+[135]	validation_0-ndcg@10:0.61082
+[136]	validation_0-ndcg@10:0.61088
+[137]	validation_0-ndcg@10:0.61092
+[138]	validation_0-ndcg@10:0.61123
+[139]	validation_0-ndcg@10:0.61138
+[140]	validation_0-ndcg@10:0.61142
+[141]	validation_0-ndcg@10:0.61138
+[142]	validation_0-ndcg@10:0.61143
+[143]	validation_0-ndcg@10:0.61146
+[144]	validation_0-ndcg@10:0.61162
+[145]	validation_0-ndcg@10:0.61180
+[146]	validation_0-ndcg@10:0.61180
+[147]	validation_0-ndcg@10:0.61160
+[148]	validation_0-ndcg@10:0.61145
+[149]	validation_0-ndcg@10:0.61140
+[150]	validation_0-ndcg@10:0.61137
+[151]	validation_0-ndcg@10:0.61151
+[152]	validation_0-ndcg@10:0.61155
+[153]	validation_0-ndcg@10:0.61147
+[154]	validation_0-ndcg@10:0.61159
+[155]	validation_0-ndcg@10:0.61142
+[156]	validation_0-ndcg@10:0.61139
+[157]	validation_0-ndcg@10:0.61141
+[158]	validation_0-ndcg@10:0.61146
+[159]	validation_0-ndcg@10:0.61155
+[160]	validation_0-ndcg@10:0.61153
+[161]	validation_0-ndcg@10:0.61146
+[162]	validation_0-ndcg@10:0.61159
+[163]	validation_0-ndcg@10:0.61164
+[164]	validation_0-ndcg@10:0.61152
+[165]	validation_0-ndcg@10:0.61157
+[166]	validation_0-ndcg@10:0.61153
+[167]	validation_0-ndcg@10:0.61159
+[168]	validation_0-ndcg@10:0.61146
+[169]	validation_0-ndcg@10:0.61154
+[170]	validation_0-ndcg@10:0.61139
+[171]	validation_0-ndcg@10:0.61154
+[172]	validation_0-ndcg@10:0.61146
+[173]	validation_0-ndcg@10:0.61152
+[174]	validation_0-ndcg@10:0.61142
+[175]	validation_0-ndcg@10:0.61147
+[176]	validation_0-ndcg@10:0.61121
+[177]	validation_0-ndcg@10:0.61128
+[178]	validation_0-ndcg@10:0.61126
+[179]	validation_0-ndcg@10:0.61128
+[180]	validation_0-ndcg@10:0.61144
+[181]	validation_0-ndcg@10:0.61163
+[182]	validation_0-ndcg@10:0.61181
+[183]	validation_0-ndcg@10:0.61188
+[184]	validation_0-ndcg@10:0.61183
+[185]	validation_0-ndcg@10:0.61207
+[186]	validation_0-ndcg@10:0.61207
+[187]	validation_0-ndcg@10:0.61212
+[188]	validation_0-ndcg@10:0.61240
+[189]	validation_0-ndcg@10:0.61234
+[190]	validation_0-ndcg@10:0.61242
+[191]	validation_0-ndcg@10:0.61263
+[192]	validation_0-ndcg@10:0.61274
+[193]	validation_0-ndcg@10:0.61266
+[194]	validation_0-ndcg@10:0.61272
+[195]	validation_0-ndcg@10:0.61258
+[196]	validation_0-ndcg@10:0.61278
+[197]	validation_0-ndcg@10:0.61273
+[198]	validation_0-ndcg@10:0.61288
+[199]	validation_0-ndcg@10:0.61283
+[200]	validation_0-ndcg@10:0.61276
+[201]	validation_0-ndcg@10:0.61260
+[202]	validation_0-ndcg@10:0.61288
+[203]	validation_0-ndcg@10:0.61266
+[204]	validation_0-ndcg@10:0.61288
+[205]	validation_0-ndcg@10:0.61293
+[206]	validation_0-ndcg@10:0.61285
+[207]	validation_0-ndcg@10:0.61309
+[208]	validation_0-ndcg@10:0.61320
+[209]	validation_0-ndcg@10:0.61311
+[210]	validation_0-ndcg@10:0.61301
+[211]	validation_0-ndcg@10:0.61299
+[212]	validation_0-ndcg@10:0.61327
+[213]	validation_0-ndcg@10:0.61317
+[214]	validation_0-ndcg@10:0.61307
+[215]	validation_0-ndcg@10:0.61312
+[216]	validation_0-ndcg@10:0.61309
+[217]	validation_0-ndcg@10:0.61310
+[218]	validation_0-ndcg@10:0.61319
+[219]	validation_0-ndcg@10:0.61314
+[220]	validation_0-ndcg@10:0.61306
+[221]	validation_0-ndcg@10:0.61308
+[222]	validation_0-ndcg@10:0.61306
+[223]	validation_0-ndcg@10:0.61292
+[224]	validation_0-ndcg@10:0.61306
+[225]	validation_0-ndcg@10:0.61323
+[226]	validation_0-ndcg@10:0.61318
+[227]	validation_0-ndcg@10:0.61317
+[228]	validation_0-ndcg@10:0.61324
+[229]	validation_0-ndcg@10:0.61326
+[230]	validation_0-ndcg@10:0.61334
+[231]	validation_0-ndcg@10:0.61334
+[232]	validation_0-ndcg@10:0.61340
+[233]	validation_0-ndcg@10:0.61337
+[234]	validation_0-ndcg@10:0.61351
+[235]	validation_0-ndcg@10:0.61355
+[236]	validation_0-ndcg@10:0.61363
+[237]	validation_0-ndcg@10:0.61369
+[238]	validation_0-ndcg@10:0.61372
+[239]	validation_0-ndcg@10:0.61369
+[240]	validation_0-ndcg@10:0.61372
+[241]	validation_0-ndcg@10:0.61355
+[242]	validation_0-ndcg@10:0.61354
+[243]	validation_0-ndcg@10:0.61363
+[244]	validation_0-ndcg@10:0.61369
+[245]	validation_0-ndcg@10:0.61378
+[246]	validation_0-ndcg@10:0.61367
+[247]	validation_0-ndcg@10:0.61374
+[248]	validation_0-ndcg@10:0.61373
+[249]	validation_0-ndcg@10:0.61389
+[250]	validation_0-ndcg@10:0.61398
+[251]	validation_0-ndcg@10:0.61404
+[252]	validation_0-ndcg@10:0.61421
+[253]	validation_0-ndcg@10:0.61431
+[254]	validation_0-ndcg@10:0.61440
+[255]	validation_0-ndcg@10:0.61434
+[256]	validation_0-ndcg@10:0.61439
+[257]	validation_0-ndcg@10:0.61446
+[258]	validation_0-ndcg@10:0.61463
+[259]	validation_0-ndcg@10:0.61451
+[260]	validation_0-ndcg@10:0.61450
+[261]	validation_0-ndcg@10:0.61460
+[262]	validation_0-ndcg@10:0.61476
+[263]	validation_0-ndcg@10:0.61481
+[264]	validation_0-ndcg@10:0.61453
+[265]	validation_0-ndcg@10:0.61466
+[266]	validation_0-ndcg@10:0.61484
+[267]	validation_0-ndcg@10:0.61503
+[268]	validation_0-ndcg@10:0.61508
+[269]	validation_0-ndcg@10:0.61519
+[270]	validation_0-ndcg@10:0.61522
+[271]	validation_0-ndcg@10:0.61525
+[272]	validation_0-ndcg@10:0.61527
+[273]	validation_0-ndcg@10:0.61521
+[274]	validation_0-ndcg@10:0.61519
+[275]	validation_0-ndcg@10:0.61531
+[276]	validation_0-ndcg@10:0.61537
+[277]	validation_0-ndcg@10:0.61533
+[278]	validation_0-ndcg@10:0.61533
+[279]	validation_0-ndcg@10:0.61538
+[280]	validation_0-ndcg@10:0.61530
+[281]	validation_0-ndcg@10:0.61528
+[282]	validation_0-ndcg@10:0.61523
+[283]	validation_0-ndcg@10:0.61535
+[284]	validation_0-ndcg@10:0.61530
+[285]	validation_0-ndcg@10:0.61515
+[286]	validation_0-ndcg@10:0.61516
+[287]	validation_0-ndcg@10:0.61534
+[288]	validation_0-ndcg@10:0.61527
+[289]	validation_0-ndcg@10:0.61521
+[290]	validation_0-ndcg@10:0.61528
+[291]	validation_0-ndcg@10:0.61538
+[292]	validation_0-ndcg@10:0.61552
+[293]	validation_0-ndcg@10:0.61574
+[294]	validation_0-ndcg@10:0.61548
+[295]	validation_0-ndcg@10:0.61545
+[296]	validation_0-ndcg@10:0.61550
+[297]	validation_0-ndcg@10:0.61539
+[298]	validation_0-ndcg@10:0.61550
+[299]	validation_0-ndcg@10:0.61571
+[300]	validation_0-ndcg@10:0.61577
+[301]	validation_0-ndcg@10:0.61581
+[302]	validation_0-ndcg@10:0.61580
+[303]	validation_0-ndcg@10:0.61560
+[304]	validation_0-ndcg@10:0.61563
+[305]	validation_0-ndcg@10:0.61553
+[306]	validation_0-ndcg@10:0.61536
+[307]	validation_0-ndcg@10:0.61548
+[308]	validation_0-ndcg@10:0.61555
+[309]	validation_0-ndcg@10:0.61550
+[310]	validation_0-ndcg@10:0.61548
+[311]	validation_0-ndcg@10:0.61540
+[312]	validation_0-ndcg@10:0.61555
+[313]	validation_0-ndcg@10:0.61557
+[314]	validation_0-ndcg@10:0.61565
+[315]	validation_0-ndcg@10:0.61556
+[316]	validation_0-ndcg@10:0.61567
+[317]	validation_0-ndcg@10:0.61572
+[318]	validation_0-ndcg@10:0.61564
+[319]	validation_0-ndcg@10:0.61562
+[320]	validation_0-ndcg@10:0.61566
+[321]	validation_0-ndcg@10:0.61564
+[322]	validation_0-ndcg@10:0.61560
+[323]	validation_0-ndcg@10:0.61555
+[324]	validation_0-ndcg@10:0.61549
+[325]	validation_0-ndcg@10:0.61563
+[326]	validation_0-ndcg@10:0.61569
+[327]	validation_0-ndcg@10:0.61572
+[328]	validation_0-ndcg@10:0.61584
+[329]	validation_0-ndcg@10:0.61575
+[330]	validation_0-ndcg@10:0.61587
+[331]	validation_0-ndcg@10:0.61591
+[332]	validation_0-ndcg@10:0.61603
+[333]	validation_0-ndcg@10:0.61590
+[334]	validation_0-ndcg@10:0.61602
+[335]	validation_0-ndcg@10:0.61598
+[336]	validation_0-ndcg@10:0.61602
+[337]	validation_0-ndcg@10:0.61601
+[338]	validation_0-ndcg@10:0.61594
+[339]	validation_0-ndcg@10:0.61600
+[340]	validation_0-ndcg@10:0.61593
+[341]	validation_0-ndcg@10:0.61597
+[342]	validation_0-ndcg@10:0.61595
+[343]	validation_0-ndcg@10:0.61595
+[344]	validation_0-ndcg@10:0.61602
+[345]	validation_0-ndcg@10:0.61604
+[346]	validation_0-ndcg@10:0.61597
+[347]	validation_0-ndcg@10:0.61593
+[348]	validation_0-ndcg@10:0.61601
+[349]	validation_0-ndcg@10:0.61596
+[350]	validation_0-ndcg@10:0.61591
+[351]	validation_0-ndcg@10:0.61607
+[352]	validation_0-ndcg@10:0.61603
+[353]	validation_0-ndcg@10:0.61602
+[354]	validation_0-ndcg@10:0.61599
+[355]	validation_0-ndcg@10:0.61612
+[356]	validation_0-ndcg@10:0.61625
+[357]	validation_0-ndcg@10:0.61622
+[358]	validation_0-ndcg@10:0.61619
+[359]	validation_0-ndcg@10:0.61608
+[360]	validation_0-ndcg@10:0.61615
+[361]	validation_0-ndcg@10:0.61616
+[362]	validation_0-ndcg@10:0.61623
+[363]	validation_0-ndcg@10:0.61628
+[364]	validation_0-ndcg@10:0.61626
+[365]	validation_0-ndcg@10:0.61622
+[366]	validation_0-ndcg@10:0.61615
+[367]	validation_0-ndcg@10:0.61604
+[368]	validation_0-ndcg@10:0.61619
+[369]	validation_0-ndcg@10:0.61614
+[370]	validation_0-ndcg@10:0.61602
+[371]	validation_0-ndcg@10:0.61616
+[372]	validation_0-ndcg@10:0.61611
+[373]	validation_0-ndcg@10:0.61620
+[374]	validation_0-ndcg@10:0.61629
+[375]	validation_0-ndcg@10:0.61643
+[376]	validation_0-ndcg@10:0.61638
+[377]	validation_0-ndcg@10:0.61632
+[378]	validation_0-ndcg@10:0.61635
+[379]	validation_0-ndcg@10:0.61650
+[380]	validation_0-ndcg@10:0.61634
+[381]	validation_0-ndcg@10:0.61640
+[382]	validation_0-ndcg@10:0.61644
+[383]	validation_0-ndcg@10:0.61643
+[384]	validation_0-ndcg@10:0.61638
+[385]	validation_0-ndcg@10:0.61642
+[386]	validation_0-ndcg@10:0.61643
+[387]	validation_0-ndcg@10:0.61651
+[388]	validation_0-ndcg@10:0.61666
+[389]	validation_0-ndcg@10:0.61663
+[390]	validation_0-ndcg@10:0.61662
+[391]	validation_0-ndcg@10:0.61662
+[392]	validation_0-ndcg@10:0.61673
+[393]	validation_0-ndcg@10:0.61678
+[394]	validation_0-ndcg@10:0.61681
+[395]	validation_0-ndcg@10:0.61676
+[396]	validation_0-ndcg@10:0.61682
+[397]	validation_0-ndcg@10:0.61673
+[398]	validation_0-ndcg@10:0.61670
+[399]	validation_0-ndcg@10:0.61669
+[400]	validation_0-ndcg@10:0.61670
+[401]	validation_0-ndcg@10:0.61650
+[402]	validation_0-ndcg@10:0.61652
+[403]	validation_0-ndcg@10:0.61659
+[404]	validation_0-ndcg@10:0.61670
+[405]	validation_0-ndcg@10:0.61678
+[406]	validation_0-ndcg@10:0.61675
+[407]	validation_0-ndcg@10:0.61673
+[408]	validation_0-ndcg@10:0.61674
+[409]	validation_0-ndcg@10:0.61688
+[410]	validation_0-ndcg@10:0.61686
+[411]	validation_0-ndcg@10:0.61678
+[412]	validation_0-ndcg@10:0.61665
+[413]	validation_0-ndcg@10:0.61683
+[414]	validation_0-ndcg@10:0.61674
+[415]	validation_0-ndcg@10:0.61670
+[416]	validation_0-ndcg@10:0.61673
+[417]	validation_0-ndcg@10:0.61683
+[418]	validation_0-ndcg@10:0.61683
+[419]	validation_0-ndcg@10:0.61690
+[420]	validation_0-ndcg@10:0.61688
+[421]	validation_0-ndcg@10:0.61681
+[422]	validation_0-ndcg@10:0.61689
+[423]	validation_0-ndcg@10:0.61690
+[424]	validation_0-ndcg@10:0.61699
+[425]	validation_0-ndcg@10:0.61698
+[426]	validation_0-ndcg@10:0.61698
+[427]	validation_0-ndcg@10:0.61697
+[428]	validation_0-ndcg@10:0.61709
+[429]	validation_0-ndcg@10:0.61706
+[430]	validation_0-ndcg@10:0.61701
+[431]	validation_0-ndcg@10:0.61709
+[432]	validation_0-ndcg@10:0.61703
+[433]	validation_0-ndcg@10:0.61709
+[434]	validation_0-ndcg@10:0.61702
+[435]	validation_0-ndcg@10:0.61696
+[436]	validation_0-ndcg@10:0.61693
+[437]	validation_0-ndcg@10:0.61683
+[438]	validation_0-ndcg@10:0.61689
+[439]	validation_0-ndcg@10:0.61709
+[440]	validation_0-ndcg@10:0.61696
+[441]	validation_0-ndcg@10:0.61687
+[442]	validation_0-ndcg@10:0.61702
+[443]	validation_0-ndcg@10:0.61708
+[444]	validation_0-ndcg@10:0.61715
+[445]	validation_0-ndcg@10:0.61703
+[446]	validation_0-ndcg@10:0.61705
+[447]	validation_0-ndcg@10:0.61717
+[448]	validation_0-ndcg@10:0.61718
+[449]	validation_0-ndcg@10:0.61726
+[450]	validation_0-ndcg@10:0.61722
+[451]	validation_0-ndcg@10:0.61725
+[452]	validation_0-ndcg@10:0.61727
+[453]	validation_0-ndcg@10:0.61725
+[454]	validation_0-ndcg@10:0.61708
+[455]	validation_0-ndcg@10:0.61696
+[456]	validation_0-ndcg@10:0.61681
+[457]	validation_0-ndcg@10:0.61687
+[458]	validation_0-ndcg@10:0.61688
+[459]	validation_0-ndcg@10:0.61706
+[460]	validation_0-ndcg@10:0.61707
+[461]	validation_0-ndcg@10:0.61714
+[462]	validation_0-ndcg@10:0.61721
+[463]	validation_0-ndcg@10:0.61711
+[464]	validation_0-ndcg@10:0.61723
+[465]	validation_0-ndcg@10:0.61719
+[466]	validation_0-ndcg@10:0.61722
+[467]	validation_0-ndcg@10:0.61720
+[468]	validation_0-ndcg@10:0.61722
+[469]	validation_0-ndcg@10:0.61718
+[470]	validation_0-ndcg@10:0.61718
+[471]	validation_0-ndcg@10:0.61712
+[472]	validation_0-ndcg@10:0.61698
+[473]	validation_0-ndcg@10:0.61697
+[474]	validation_0-ndcg@10:0.61704
+[475]	validation_0-ndcg@10:0.61715
+[476]	validation_0-ndcg@10:0.61724
+[477]	validation_0-ndcg@10:0.61730
+[478]	validation_0-ndcg@10:0.61731
+[479]	validation_0-ndcg@10:0.61729
+[480]	validation_0-ndcg@10:0.61731
+[481]	validation_0-ndcg@10:0.61723
+[482]	validation_0-ndcg@10:0.61724
+[483]	validation_0-ndcg@10:0.61727
+[484]	validation_0-ndcg@10:0.61733
+[485]	validation_0-ndcg@10:0.61731
+[486]	validation_0-ndcg@10:0.61737
+[487]	validation_0-ndcg@10:0.61738
+[488]	validation_0-ndcg@10:0.61732
+[489]	validation_0-ndcg@10:0.61735
+[490]	validation_0-ndcg@10:0.61732
+[491]	validation_0-ndcg@10:0.61742
+[492]	validation_0-ndcg@10:0.61746
+[493]	validation_0-ndcg@10:0.61744
+[494]	validation_0-ndcg@10:0.61738
+[495]	validation_0-ndcg@10:0.61753
+[496]	validation_0-ndcg@10:0.61755
+[497]	validation_0-ndcg@10:0.61761
+[498]	validation_0-ndcg@10:0.61752
+[499]	validation_0-ndcg@10:0.61745
+[17:17:45]   raw ranker MRR on ranker eval=0.539916
+[17:17:45]   blend alpha=0.00 MRR=0.400312
+[17:17:45]   blend alpha=0.05 MRR=0.407416
+[17:17:45]   blend alpha=0.10 MRR=0.414684
+[17:17:46]   blend alpha=0.15 MRR=0.423081
+[17:17:46]   blend alpha=0.20 MRR=0.431318
+[17:17:46]   blend alpha=0.25 MRR=0.440879
+[17:17:46]   blend alpha=0.30 MRR=0.450576
+[17:17:46]   blend alpha=0.35 MRR=0.459650
+[17:17:46]   blend alpha=0.40 MRR=0.469562
+[17:17:46]   blend alpha=0.45 MRR=0.478168
+[17:17:46]   blend alpha=0.50 MRR=0.484032
+[17:17:46]   blend alpha=0.55 MRR=0.490957
+[17:17:46]   blend alpha=0.60 MRR=0.497505
+[17:17:46]   blend alpha=0.65 MRR=0.503973
+[17:17:46]   blend alpha=0.70 MRR=0.510502
+[17:17:46]   blend alpha=0.75 MRR=0.518730
+[17:17:46]   blend alpha=0.80 MRR=0.524809
+[17:17:46]   blend alpha=0.85 MRR=0.531139
+[17:17:46]   blend alpha=0.90 MRR=0.536131
+[17:17:46]   blend alpha=0.95 MRR=0.538924
+[17:17:46]   blend alpha=1.00 MRR=0.539916
+[17:17:46]   selected ranker use=True alpha=1.00 base=0.400312 best=0.539916
+[17:17:46] Done
