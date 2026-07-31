@@ -9,7 +9,7 @@
 - GitHub：`https://github.com/purplellllll/jittor-lc666-graph-learning-recommendation`
 - GitLink：`https://gitlink.org.cn/llllllc/lc666`
 
-GitHub 仓库名受平台限制只能使用 ASCII 字符，中文项目名保留在 README、PDF 和项目描述中。
+GitHub 仓库名受平台限制只能使用 ASCII 字符，中文项目名保留在 README 与说明文档中。
 
 ## 最终方案
 
