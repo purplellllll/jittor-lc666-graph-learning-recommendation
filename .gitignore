@@ -1,12 +1,11 @@
-# Secrets and local authentication
+# Credentials and local settings
 .secrets/
-**/.secrets/
-*.pem
-*.key
 .env
 .env.*
+*.pem
+*.key
 
-# Python / IDE / OS caches
+# Python and editor caches
 __pycache__/
 *.py[cod]
 .pytest_cache/
@@ -16,35 +15,27 @@ __pycache__/
 venv/
 .idea/
 .vscode/
-Thumbs.db
-.DS_Store
 
-# Local service and notebook caches
-.cache/
+# Competition data and generated outputs
+data/
+outputs/
+result.zip
+metadata.json
+*.csv
+
+# Historical local experiments retained outside the published tree
+formal_track1/
+kaggle_output/
 .kaggle_kernel/
 .kaggle_kernel_formal_track1/
+.cache/
 .docx_qa_*/
 
-# Reproducible generated artifacts
-**/*.csv
-formal_track1/kaggle_output*/
-formal_track1/local_output*/
-formal_track1/fusion_*_outputs/
-kaggle_output/
-reproduced/
-
-# Most archives are repeated intermediate submissions. Keep only the source
-# packages and the final independently reproducible submission listed below.
-**/*.zip
-!/warmup1_starter.zip
-!/result.zip
-!formal_track1/downloads/baseline.zip
-!formal_track1/downloads/track1_data.zip
-!formal_track1/result_v69_d1v65_1200_d2v62_local.zip
-
-# The canonical warm-up dataset is kept once.
-**/*.pkl
-!data/cora.pkl
-
-# Generated PDF QA files are local-only; the verified DOCX is committed.
+# Temporary and generated review artifacts
+tmp/
+output/
 *.pdf
+
+# OS files
+Thumbs.db
+.DS_Store

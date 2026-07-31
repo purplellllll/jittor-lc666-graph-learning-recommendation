@@ -1,83 +1,140 @@
-# Jittor 图学习挑战赛复现
+# jittor-lc666-基于图学习的推荐任务
 
-本仓库整理了计图挑战赛热身赛与正式赛 Track 1 的代码、关键实验记录、复现数据和算法说明。正式赛最终方案不是单一图神经网络，而是面向时间有向图候选边的 Learning-to-Rank 系统：历史统计与序列模式负责“记忆”，正向/反向 TruncatedSVD 负责低秩图结构，XGBRanker 负责行内 100 个候选的最终排序。
+计图人工智能挑战赛正式赛 Track 1 可复现代码。任务是在时间有向图中，对每个查询给出的 100 个候选目标节点进行排序，使真实目标尽可能排在前列。
 
-## 核心结果
+本仓库仅包含正式赛最终方案、复现依赖、审核说明和必要实验记录，不包含热身赛代码。
 
-| 数据集 | 最终配置 | 本地 MRR |
-|---|---|---:|
-| dataset1 | v65 特征、去位置特征、双向 SVD32、1200 棵树、ranker/V18 = 0.95/0.05 | 0.8456168559 |
-| dataset2 | v61 精简特征、去位置特征、双向 SVD32、850 棵树、纯 ranker | 0.5496001738 |
-| 合计 | V69 独立可复现方案 | 1.3952170297 |
+## 开源地址
 
-完整的算法推导、版本演进、特征体系、工程优化和复现逻辑见 `交付/计图挑战赛_代码复现与核心算法说明.docx`。
+- GitHub：`https://github.com/purplellllll/jittor-lc666-graph-learning-recommendation`
+- GitLink：`https://gitlink.org.cn/llllllc/lc666`
 
-## 目录
+GitHub 仓库名受平台限制只能使用 ASCII 字符，中文项目名保留在 README、PDF 和项目描述中。
+
+## 最终方案
+
+正式赛被建模为时间动态图上的候选边排序问题。完整流程为：
+
+1. 按时间切分训练边，构造与正式测试一致的 100 候选验证行。
+2. 对历史有向边建立计数、最近时间、转移、跳跃转移、节点窗口统计和测试候选分布索引。
+3. 对正向图与反向图分别计算时间衰减的 TruncatedSVD 表示。
+4. 为每个候选生成绝对统计、行内相对排名、序列模式、图结构和无标签测试分布特征。
+5. 使用 XGBRanker 的 `rank:ndcg` 目标训练行内排序器，并以本地 MRR 选择最终混合权重。
+6. 使用完整历史重建特征，分块输出 `dataset1.csv`、`dataset2.csv` 和 `result.zip`。
+
+最终 V69 独立方案：
+
+| 数据集 | 特征配置 | 树数 | SVD | Ranker 权重 | 本地 MRR |
+|---|---|---:|---:|---:|---:|
+| dataset1 | v65，167/180 维，不使用候选位置 | 1200 | 正/反向各 32 维 | 0.95 | 0.8456168559 |
+| dataset2 | v61，105/180 维，不使用候选位置 | 850 | 正/反向各 32 维 | 1.00 | 0.5496001738 |
+| 合计 | V69 | - | - | - | 1.3952170297 |
+
+## 仓库结构
 
 ```text
 .
-├─ gcn.py                              # 热身赛：两层 GCN、早停、多种子集成、配额后处理
-├─ data/cora.pkl                       # 热身赛 Cora 数据
-├─ formal_track1/
-│  ├─ track1_solution_v62_dataset1_ranker.py  # 当前完整正式赛主线（含 v65/v67 profile）
-│  ├─ track1_solution_v29_robust.py ...       # 关键版本演进源码
-│  ├─ *_fusions*.py / fusion_*.py             # 秩融合与门控实验
-│  ├─ downloads/track1_data.zip               # 正式赛原始数据
-│  ├─ local_*_metadata.json / *.log           # 本地实验参数与指标
-│  └─ result_v69_d1v65_1200_d2v62_local.zip   # 最终独立方案输出
-├─ build_algorithm_doc.py              # 算法文档生成脚本
-├─ 交付/                               # 最终算法说明文档
-└─ UPLOAD_MANIFEST.md                  # 上传范围、排除项与大文件说明
+├── code/
+│   ├── main.py                 # 训练、验证、预测和打包的唯一入口
+│   ├── run.sh                  # Ubuntu 一键复现脚本
+│   ├── check_environment.py    # 环境与依赖版本检查
+│   └── config.json             # 最终 V69 参数快照
+├── docs/
+│   └── 复现说明.md
+├── records/
+│   ├── final_metrics.json      # 最终本地指标与输出行数
+│   └── reproduction.log        # dataset1 完整训练日志
+├── requirements.txt
+├── environment.yml
+├── LICENSE
 ```
 
-## 环境
+## 审核环境
 
-建议使用 Python 3.10 或 3.11。GPU 训练需要可用的 CUDA 与支持 GPU 的 XGBoost；没有 GPU 时可修改主脚本的 XGBoost 参数使用 CPU。
+与通知中的复现环境保持一致：
 
-```powershell
-python -m venv .venv
-.\.venv\Scripts\Activate.ps1
+- Ubuntu 22.04
+- CUDA 12.4
+- Python 3.10
+- Jittor 1.3.10.0
+
+本方案的候选排序器使用 XGBoost；Jittor 版本仍按主办方审核镜像固定。完整 Python 依赖见 `requirements.txt`。
+
+## 安装
+
+```bash
+sudo apt-get update
+sudo apt-get install -y python3.10-dev g++ build-essential libomp-dev
+python3.10 -m venv .venv
+source .venv/bin/activate
+python -m pip install --upgrade pip
 python -m pip install -r requirements.txt
+python code/check_environment.py
 ```
 
-## 热身赛复现
+## 数据
 
-```powershell
-python .\gcn.py --data_path .\data\cora.pkl --output_dir .\reproduced\warmup
+代码默认从主办方提供的地址下载 `track1_data.zip`，并解压到 `data/track1/`：
+
+```text
+data/track1/
+├── dataset1/train.csv
+├── dataset1/test.csv
+├── dataset2/train.csv
+└── dataset2/test.csv
 ```
 
-模型先执行 `A+I` 的对称归一化，训练两层 GCN；使用验证集选择最佳轮数，再用 `train+val` 重训并进行多随机种子概率平均。类别配额后处理依赖特定测试分布，建议作为可开关实验对待。
+也可以提前把官方数据压缩包放到 `data/track1_data.zip`。仓库不重新分发测试标签或任何外部标注。
 
-## 正式赛复现
+## 一键复现
 
-先解压数据：
+在仓库根目录执行：
 
-```powershell
-Expand-Archive .\formal_track1\downloads\track1_data.zip .\formal_track1\data -Force
+```bash
+chmod +x code/run.sh
+bash code/run.sh
 ```
 
-运行最终独立方案：
+等价命令：
 
-```powershell
-python .\formal_track1\track1_solution_v62_dataset1_ranker.py `
-  --data-root .\formal_track1\data `
-  --output-dir .\reproduced\formal_track1 `
-  --datasets dataset1,dataset2 `
-  --ranker-rows 130000 `
-  --svd-dim 32 `
-  --seed 20260525
+```bash
+python code/main.py \
+  --preset final \
+  --data_dir data/track1 \
+  --zip_path data/track1_data.zip \
+  --output_dir outputs \
+  --result_zip outputs/result.zip
 ```
 
-主脚本会完成：时间切分与伪候选构造、历史索引、180 维原始特征、profile 选列、双向时间加权 SVD、XGBRanker 训练、验证 MRR 选权重、完整历史重建以及逐块生成提交。dataset1 和 dataset2 的最终 profile/树数在脚本的数据集配置中分别设定。
+输出：
 
-## 复现注意事项
+```text
+outputs/
+├── dataset1.csv       # 61,051 行，每行 100 个分数
+├── dataset2.csv       # 153,420 行，每行 100 个分数
+├── metadata.json
+└── result.zip
+```
 
-- 每个查询组严格包含 100 个候选；XGBRanker 的 `group` 必须保持为 `[100, 100, ...]`。
-- 验证切分必须按时间顺序，不能随机打乱边，否则会产生未来信息泄漏。
-- 候选位置特征在最终方案中关闭，避免模型学习人工插入位置。
-- 输出分数是每行 min-max 归一化后的排序分数，不是校准概率。
-- V71–V94 的部分融合依赖未单独保留的外部/open 提交；完全自包含复现以 V69 为准。
+固定随机种子为 `20260525`。GPU 不可用时，XGBoost 会自动回退到 CPU `hist`，但耗时会显著增加。
 
-## 资料完整性
+## 无测试标签声明
 
-GitHub 不适合作为 17.6GB 重复训练产物的对象存储。本仓库保留了产生结果所需的数据、源码、最终结果和实验元数据；重复 CSV、各中间版本 ZIP、缓存及密钥不进入版本控制。详见 `UPLOAD_MANIFEST.md`。
+- 训练过程只读取 `train.csv` 中的历史边标签。
+- `test.csv` 仅提供 `src`、`time` 和 `c1...c100` 候选集合；代码不会读取或构造测试集真实目标。
+- 测试候选频率、首次/末次出现时间和无标签共现统计属于转导式无监督特征，不包含测试标签。
+- 验证集的真实目标完全由训练边按时间后移构造，避免未来信息泄漏。
+- 最终方案不依赖未公开的外部提交；V71-V94 融合实验不属于本审核包。
+
+## 资源与耗时
+
+建议至少 16 核 CPU、32 GB 内存和 12 GB 以上显存。特征构建以 `float32`、排序键和分块预测控制内存；完整训练时间取决于 CPU、磁盘和 GPU，审核时以日志阶段标记为准。
+
+## 说明材料
+
+- 命令行与故障排查：`docs/复现说明.md`
+- PDF 说明和最终审核 ZIP 按当前整理结果另行补充，本次仓库提交暂不包含。
+
+## 许可证
+
+本项目采用 MIT License，详见 `LICENSE`。

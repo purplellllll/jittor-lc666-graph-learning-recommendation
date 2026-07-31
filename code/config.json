@@ -1,0 +1,37 @@
+{
+  "preset": "final",
+  "seed": 20260525,
+  "candidate_mode": "row",
+  "eval_candidate_mode": "row",
+  "position_features": false,
+  "svd": {
+    "dimension": 32,
+    "iterations": 5,
+    "directions": ["forward", "reverse"]
+  },
+  "xgboost": {
+    "objective": "rank:ndcg",
+    "eval_metric": "ndcg@10",
+    "max_depth": 5,
+    "learning_rate": 0.032,
+    "subsample": 0.88,
+    "colsample_bytree": 0.9,
+    "min_child_weight": 20.0,
+    "reg_lambda": 4.0,
+    "reg_alpha": 0.0
+  },
+  "dataset1": {
+    "feature_profile": "v65",
+    "selected_features": 167,
+    "trees": 1200,
+    "ranker_blend_alpha": 0.95,
+    "validation_mrr": 0.8456168558983285
+  },
+  "dataset2": {
+    "feature_profile": "v61",
+    "selected_features": 105,
+    "trees": 850,
+    "ranker_blend_alpha": 1.0,
+    "validation_mrr": 0.5496001737845033
+  }
+}
