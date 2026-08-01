@@ -1,0 +1,446 @@
+\documentclass[UTF8,a4paper,11pt]{ctexart}
+
+\usepackage[a4paper,margin=2.25cm,headheight=15pt]{geometry}
+\usepackage{amsmath,amssymb}
+\usepackage{booktabs,longtable,tabularx,array}
+\usepackage{enumitem}
+\usepackage{xcolor}
+\usepackage{listings}
+\usepackage{fancyhdr}
+\usepackage{lastpage}
+\usepackage{hyperref}
+
+\definecolor{accent}{HTML}{1F5A94}
+\definecolor{softblue}{HTML}{EEF5FB}
+\definecolor{softgray}{HTML}{F5F6F7}
+\definecolor{codegreen}{HTML}{26734D}
+\hypersetup{
+  colorlinks=true,
+  linkcolor=accent,
+  urlcolor=accent,
+  citecolor=accent,
+  pdftitle={计图人工智能挑战赛正式赛算法与复现说明},
+  pdfauthor={lc666}
+}
+
+\pagestyle{fancy}
+\fancyhf{}
+\lhead{计图人工智能挑战赛正式赛}
+\rhead{基于图学习的推荐任务}
+\cfoot{第 \thepage{} 页，共 \pageref{LastPage} 页}
+\renewcommand{\headrulewidth}{0.4pt}
+
+\setlist[itemize]{leftmargin=2em,itemsep=0.25em,topsep=0.35em}
+\setlist[enumerate]{leftmargin=2.2em,itemsep=0.25em,topsep=0.35em}
+\renewcommand{\arraystretch}{1.22}
+\newcolumntype{Y}{>{\raggedright\arraybackslash}X}
+\newcolumntype{C}[1]{>{\centering\arraybackslash}p{#1}}
+
+\lstdefinestyle{codeblock}{
+  backgroundcolor=\color{softgray},
+  basicstyle=\ttfamily\small,
+  breaklines=true,
+  columns=fullflexible,
+  frame=single,
+  rulecolor=\color{black!15},
+  keywordstyle=\color{accent},
+  commentstyle=\color{codegreen},
+  showstringspaces=false,
+  tabsize=2
+}
+\lstset{style=codeblock}
+
+\title{\vspace{-1.3cm}\textbf{计图人工智能挑战赛正式赛\\算法原理与完整复现说明}\\[0.7em]
+\large 基于图学习的推荐任务（Track 1）}
+\author{队伍：lc666}
+\date{2026 年 8 月}
+
+\begin{document}
+
+\maketitle
+\thispagestyle{empty}
+\vfill
+\begin{center}
+\begin{minipage}{0.88\textwidth}
+\colorbox{softblue}{%
+  \parbox{0.94\textwidth}{
+    \textbf{方案摘要：}将任务建模为时间有向图上的候选边排序。首先以训练历史构造边频次、时效性、转移、跳跃转移、节点窗口和无标签候选分布特征；随后在正向图与反向图上提取时间加权的低秩表示；最后使用 XGBRanker 学习每个查询行内部 100 个候选节点的相对次序。最终 V69 方案针对两个数据集分别选择特征子集、树数和混合系数，在本地严格时间验证上取得合计 MRR 1.3952170297。
+  }}
+\end{minipage}
+\end{center}
+\vfill
+\begin{center}
+\small
+代码仓库：\url{https://github.com/purplellllll/jittor-lc666-graph-learning-recommendation}\\
+GitLink：\url{https://gitlink.org.cn/llllllc/lc666}
+\end{center}
+\clearpage
+
+\tableofcontents
+\clearpage
+
+\section{任务定义与建模}
+
+\subsection{输入与输出}
+
+训练集中的每条记录表示时间有向边
+\[
+e=(u,v,t),
+\]
+其中 $u$ 为源节点、$v$ 为目标节点、$t$ 为时间戳。测试集中的每个查询为
+\[
+q_i=(u_i,t_i,\mathcal{C}_i),\qquad
+\mathcal{C}_i=\{c_{i1},c_{i2},\ldots,c_{i100}\}.
+\]
+模型需要为 100 个候选目标节点分别输出一个分数，真实目标节点的排序越靠前越好。最终结果按行输出 100 个浮点分数，列顺序与候选列 \texttt{c1--c100} 完全一致。
+
+\subsection{评价指标}
+
+本地验证使用平均倒数排名（Mean Reciprocal Rank, MRR）：
+\[
+\operatorname{MRR}=\frac{1}{N}\sum_{i=1}^{N}\frac{1}{r_i},
+\]
+其中 $r_i$ 是第 $i$ 个查询中真实目标的名次。该指标强烈奖励前几名，因此优化的重点不是估计绝对点击概率，而是提升\textbf{同一查询行内}真实节点的相对顺序。
+
+\subsection{核心建模判断}
+
+本任务同时包含三个结构：
+
+\begin{itemize}
+  \item \textbf{时间结构：}历史边越新，通常越能表示当前偏好；
+  \item \textbf{有向图结构：}源节点、目标节点以及正反向关系的语义不对称；
+  \item \textbf{候选集合结构：}模型只需在当前 100 个候选中排序，行内相对量比全局绝对量更稳定。
+\end{itemize}
+
+因此最终方案采用“规则图分数作为稳定先验 + 图与时间特征 + Learning-to-Rank 精排”的组合，而不是将问题处理成普通的独立二分类。
+
+\section{整体算法流程}
+
+完整流程可以概括为：
+
+\begin{enumerate}
+  \item 对训练边按时间稳定排序，构造历史图；
+  \item 严格按时间切分训练历史和验证边，并使用正式测试候选行构造 100 候选验证查询；
+  \item 从历史边构建 pair、transition、skip-transition、节点统计和最近序列索引；
+  \item 在正向图与反向图上分别计算 32 维时间加权 TruncatedSVD；
+  \item 为每个 $(u,t,c)$ 候选三元组生成 180 维原始特征，并按数据集选择特征子集；
+  \item 以每个查询行为一个 group，训练目标为 \texttt{rank:ndcg} 的 XGBRanker；
+  \item 将排序器分数与稳定规则基线按验证确定的系数混合；
+  \item 使用完整训练历史重建全部索引，分块预测两个数据集，逐行归一化并打包结果。
+\end{enumerate}
+
+用函数关系表示，最终候选分数为
+\[
+s_{i,j}=\alpha_d\,\widetilde{s}^{\text{ranker}}_{i,j}
++(1-\alpha_d)\,\widetilde{s}^{\text{base}}_{i,j},
+\]
+其中 $d$ 表示数据集，波浪号表示在查询行内执行 min--max 归一化。dataset1 的 $\alpha_1=0.95$，dataset2 的 $\alpha_2=1.00$。
+
+\section{时间验证设计}
+
+\subsection{严格历史切分}
+
+验证必须模拟“用过去预测未来”。dataset1 按时间顺序使用前 85\% 边作为历史、后 15\% 边作为验证事件；dataset2 若官方训练数据提供 \texttt{split} 列，则使用 \texttt{split=0} 作为历史，\texttt{split=1} 作为验证。验证边数量最多采样 130,000 条，并继续保持时间顺序。
+
+\subsection{候选行模拟}
+
+对每条验证边 $(u,v,t)$，从正式测试集随机抽取一整行 100 候选作为负样本背景，再在随机位置插入真实目标 $v$。若候选行中已经包含 $v$，则替换重复项，使每行只有一个正样本。最终预设的训练候选模式和评估候选模式均为 \texttt{row}。
+
+该策略保留了正式测试候选的联合分布与行内难度，比从全部候选节点独立采负样本更接近真实评测。随后再按时间顺序将模拟查询的前 90\% 用于排序器训练，后 10\% 用于本地评估。
+
+\subsection{防止信息泄漏}
+
+验证特征只由历史部分构建，验证真实目标不会参与历史计数、SVD 或转移统计。最终训练才使用完整训练集重建历史。测试集只读取源节点、时间和公开候选 ID，不读取、推断或构造测试真实标签。
+
+\section{图统计与时间特征}
+
+\subsection{直接边统计}
+
+对历史有向边 $(u,v)$ 统计出现次数 $n(u,v)$ 和最后出现时间 $t_{\mathrm{last}}(u,v)$。使用
+\[
+f_{\mathrm{pair\_cnt}}=\log(1+n(u,v))
+\]
+压缩长尾计数，并用指数衰减表达时效性：
+\[
+f_{\mathrm{pair\_rec}}
+=\exp\left(-\frac{\max(t-t_{\mathrm{last}}(u,v),0)}{\tau}\right),
+\quad
+\tau=\max\left(\frac{t_{\max}-t_{\min}}{10},1\right).
+\]
+同时计算反向 pair，即 $n(v,u)$ 及其新近程度，用于捕获双向关系或角色互换模式。
+
+\subsection{节点热度与时间窗口}
+
+对目标节点统计全局入边次数、最近出现时间，以及训练时间分位点 50\%、70\%、85\%、90\%、95\%、97\%、99\% 之后的窗口计数。源节点侧统计出边次数和最后活跃时间；候选节点也作为源节点统计其出边活跃程度。它们共同区分“长期热门”“短期爆发”和“近期沉寂”等状态。
+
+\subsection{转移与跳跃转移}
+
+对同一源节点 $u$ 的历史目标序列
+\[
+v_1,v_2,\ldots,v_L
+\]
+构造相邻转移 $v_{k-1}\rightarrow v_k$。为降低只使用一步转移的稀疏性，再统计最大间隔为 5 的跳跃转移：
+\[
+v_{k-\ell}\rightarrow v_k,\qquad \ell\in\{1,2,3,4,5\}.
+\]
+对查询源节点最近访问的 10 个目标分别查询正向/反向的相邻转移次数、跳跃转移次数和相应时间衰减值。这样既能描述短期序列偏好，也能容忍重复周期和非严格相邻行为。
+
+\subsection{最近历史交互}
+
+保存每个源节点最近 10 个目标，生成候选是否直接命中最近目标、匹配深度、加权匹配强度，以及源节点最近目标序列与候选节点最近序列的交集特征。交集数量和带位置衰减的交集强度可以近似表达局部共同邻居关系。
+
+\section{时间加权双向图 SVD}
+
+\subsection{正向低秩表示}
+
+设图的稀疏邻接矩阵为 $A\in\mathbb{R}^{|V|\times|V|}$。每条历史边按其在全局时间跨度中的位置加权：
+\[
+w_e=1+0.35\cdot\frac{t_e-t_{\min}}{\max(t_{\max}-t_{\min},1)}.
+\]
+相同节点对的权重累加形成 $A_{uv}$。对 $A$ 做随机化 TruncatedSVD：
+\[
+A\approx U_k\Sigma_kV_k^{\top},\qquad k=32.
+\]
+实现中源节点表示为 \texttt{fit\_transform} 得到的 $U_k\Sigma_k$，目标节点表示为 $V_k$。对候选 $(u,c)$ 计算内积、余弦相似度、行内归一化值、倒数名次和两侧向量范数。
+
+\subsection{反向低秩表示}
+
+有向图中“谁指向谁”不可互换。方案在反向矩阵 $A^{\top}$ 上独立执行同样的 32 维分解，随机种子在主种子基础上加 17。正反向表示共同刻画节点作为行为发起者和行为接受者的潜在角色，避免单向分解丢失入边侧结构。
+
+\section{无标签测试分布特征}
+
+正式测试候选集合本身反映了评测阶段的候选采样机制。方案仅利用公开字段构造转导式无监督特征：
+
+\begin{itemize}
+  \item 候选节点在全部测试查询中的出现频次；
+  \item 候选节点在测试时间分位窗口中的出现频次；
+  \item 候选节点首次/末次出现时间及时间跨度；
+  \item 同一源节点与同一候选组合的出现频次、首次/末次时间；
+  \item 上述统计的行内归一化值、倒数排名和比例特征。
+\end{itemize}
+
+这些特征不包含测试标签。它们的作用是校准训练分布和测试候选生成分布之间的偏移；所有合规边界在第~\ref{sec:compliance} 节进一步说明。
+
+\section{行内相对特征与特征筛选}
+
+原始特征总数为 180。除绝对统计外，对关键候选量生成行内相对变换：
+
+\begin{align*}
+\operatorname{norm}(x_{ij})
+&=\frac{x_{ij}-\min_j x_{ij}}{\max_j x_{ij}-\min_j x_{ij}+\varepsilon},\\
+\operatorname{invRank}(x_{ij})
+&=\frac{1}{\operatorname{rank}_{\downarrow}(x_{ij})},\\
+\operatorname{zscore}(x_{ij})
+&=\frac{x_{ij}-\mu_i}{\sigma_i+\varepsilon}.
+\end{align*}
+
+这些变换直接服务于 MRR：即使两个查询的绝对计数尺度不同，模型仍能识别“当前 100 个候选中最强”的节点。
+
+候选在输入行中的列位置不是语义特征，最终方案明确关闭 \texttt{pos\_norm} 和 \texttt{inv\_pos}，避免模型学习偶然的候选排列偏差。dataset1 使用 v65 配置，从 180 维中选择 167 维；dataset2 使用更精简的 v61 配置，选择 105 维，以减轻较稀疏或分布不同的数据上冗余特征带来的过拟合。
+
+\section{排序学习与分数融合}
+
+\subsection{XGBRanker}
+
+每个查询行是一个长度为 100 的排序 group。标签向量只有真实目标位置为 1，其余为 0。模型使用 XGBRanker，训练目标为 \texttt{rank:ndcg}，评估指标为 \texttt{ndcg@10}。最终共享超参数见表~\ref{tab:xgb}。
+
+\begin{table}[htbp]
+\centering
+\caption{XGBRanker 共享超参数}
+\label{tab:xgb}
+\begin{tabular}{ll@{\qquad}ll}
+\toprule
+参数 & 取值 & 参数 & 取值 \\
+\midrule
+max\_depth & 5 & learning\_rate & 0.032 \\
+subsample & 0.88 & colsample\_bytree & 0.90 \\
+min\_child\_weight & 20.0 & reg\_lambda & 4.0 \\
+reg\_alpha & 0.0 & random\_state & 20260525 \\
+objective & rank:ndcg & eval\_metric & ndcg@10 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+GPU 可用时使用 CUDA 上的 \texttt{hist}；GPU 失败时自动退回 CPU \texttt{hist}。回退只改变耗时，不改变算法流程和输入输出约定。
+
+\subsection{规则先验与混合}
+
+规则基线 V18 将 pair 频次/时效性、节点热度、最近目标命中、相邻转移、跳跃转移和微小确定性散列噪声线性组合，得到稳定的图启发式分数 $s^{\text{base}}$。它既是独立基线，也以归一化分数、倒数名次、z-score 和距行内最大值差等形式进入排序器特征。
+
+排序器输出与 V18 基线均在每行归一化后再混合。dataset1 保留 5\% 基线，可以降低树模型在极端稀疏查询上的波动；dataset2 的最优设置为纯排序器输出。
+
+\section{优化演进与最终取舍}
+
+整个优化过程围绕“验证分布一致性、图结构表达、过拟合控制、数据集差异化”逐步推进：
+
+\begin{longtable}{C{1.9cm}p{4.2cm}p{8.1cm}}
+\caption{主要优化阶段}\label{tab:evolution}\\
+\toprule
+阶段 & 主要变化 & 得到的认识 \\
+\midrule
+\endfirsthead
+\toprule
+阶段 & 主要变化 & 得到的认识 \\
+\midrule
+\endhead
+V3--V18 & 从节点热度逐步加入 pair、时间衰减、最近行为、转移和跳跃转移，并固定为稳定规则基线。 & 推荐信号同时依赖长期关系和短期序列；单一热度或单一 pair 统计不足，V18 可作为后续模型的可靠先验。 \\
+V25--V33 & 引入 XGBoost 排序学习，扩展绝对/相对特征；比较含候选位置和不含位置的版本。 & 直接优化行内排序优于固定权重；候选位置可能带来伪相关，最终坚持 no-position。 \\
+V34--V43 & 加入长历史、共同邻居、方向 motif、两跳/跳跃关系，并进行特征子集筛选。 & 图特征越多不一定越好；需要按验证表现保留稳定特征，控制稀疏高阶模式的噪声。 \\
+V45--V58 & 调整验证行构造、训练组数、树数和 NDCG 目标，使训练候选分布更接近正式测试。 & 从整行候选采样比独立负采样更可靠；模型容量要与验证规模配套。 \\
+V59--V61 & 加入 32 维正向 SVD、反向 SVD，并为 dataset2 形成精简的 v61 特征集。 & 低秩表示补足显式统计的泛化能力；有向图需要分别表达入边和出边角色。 \\
+V62--V69 & 对 dataset1 采用更丰富的 v65 特征并增至 1200 棵树；dataset2 保持 v61 与 850 棵树；独立确定混合系数。 & 两个数据集的稀疏度和主导信号不同，单一统一配置不如数据集特定配置。最终 V69 是可独立复现、无需外部提交的方案。 \\
+V71--V94 & 试验 reciprocal-rank、Borda、RRF、门控和外部结果融合。 & 这些是赛后/附加融合探索，依赖其他提交结果，不纳入审核复现包，也不属于最终独立方案。 \\
+\bottomrule
+\end{longtable}
+
+最终取舍的逻辑不是简单“堆更多特征”，而是：先用时间验证保证评价可信，再让候选采样贴近测试分布；随后通过图统计和双向 SVD补充表达；最后针对两个数据集分别控制特征复杂度和树模型容量。
+
+\section{最终 V69 配置与结果}
+
+\begin{table}[htbp]
+\centering
+\caption{最终独立复现配置}
+\label{tab:final}
+\begin{tabularx}{\textwidth}{lC{2.0cm}C{1.55cm}C{1.7cm}C{1.7cm}Y}
+\toprule
+数据集 & 特征配置 & 树数 & SVD & 混合系数 & 本地 MRR \\
+\midrule
+dataset1 & v65，167/180 维 & 1200 & 正/反各 32 维 & 0.95 & 0.8456168559 \\
+dataset2 & v61，105/180 维 & 850 & 正/反各 32 维 & 1.00 & 0.5496001738 \\
+合计 & V69 & --- & --- & --- & \textbf{1.3952170297} \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+这里的本地 MRR 来自固定随机种子和代码所述时间验证过程，用于复现模型选择逻辑；它不是对隐藏测试标签的计算结果。
+
+\section{工程实现与资源优化}
+
+\subsection{紧凑索引}
+
+pair 和 transition 使用整数复合键
+\[
+\operatorname{key}(a,b)=a\cdot B+b,
+\]
+其中 $B$ 大于最大节点编号。复合键排序后以 \texttt{searchsorted} 批量查询，避免维护大量 Python 字典对象。密集节点统计使用 NumPy 数组，特征矩阵统一为 \texttt{float32}。
+
+\subsection{分块构建与预测}
+
+训练和预测按查询行分块生成特征，避免一次性展开全部 $N\times100\times F$ 数据。默认排序器块大小为 1500 行；内存不足时可进一步减小。输出也分块写入 CSV，因此峰值内存主要由历史索引、SVD 和单个特征块决定。
+
+\subsection{确定性与失败回退}
+
+主随机种子固定为 20260525，NumPy 采样、SVD 和 XGBoost 均使用确定的种子。程序在 GPU 训练异常时重建 CPU 模型继续训练；只有 dataset1 和 dataset2 两个结果文件均存在时才生成 \texttt{result.zip}，降低半成品被误提交的风险。
+
+\section{复现环境}
+
+审核环境固定为：Ubuntu 22.04、CUDA 12.4、Python 3.10、Jittor 1.3.10.0。候选排序器实际使用 XGBoost 2.1.4；Jittor 版本按比赛审核环境固定，完整版本见 \path{requirements.txt} 和 \path{environment.yml}。
+
+\subsection{安装命令}
+
+\begin{lstlisting}[language=bash]
+sudo apt-get update
+sudo apt-get install -y python3.10-dev g++ build-essential libomp-dev
+python3.10 -m venv .venv
+source .venv/bin/activate
+python -m pip install --upgrade pip
+python -m pip install -r requirements.txt
+python code/check_environment.py
+\end{lstlisting}
+
+\subsection{数据目录}
+
+\begin{lstlisting}
+data/track1/
+|-- dataset1/train.csv
+|-- dataset1/test.csv
+|-- dataset2/train.csv
+`-- dataset2/test.csv
+\end{lstlisting}
+
+也可以提前把官方压缩包放在 \path{data/track1_data.zip}。代码会在数据目录缺失时从脚本中固定的主办方地址下载并解压。
+
+\subsection{一键运行}
+
+\begin{lstlisting}[language=bash]
+chmod +x code/run.sh
+bash code/run.sh
+\end{lstlisting}
+
+等价的显式命令为：
+
+\begin{lstlisting}[language=bash]
+python code/main.py \
+  --preset final \
+  --data_dir data/track1 \
+  --zip_path data/track1_data.zip \
+  --output_dir outputs \
+  --result_zip outputs/result.zip
+\end{lstlisting}
+
+若内存紧张，可执行：
+
+\begin{lstlisting}[language=bash]
+bash code/run.sh --ranker_chunk_rows 800 --chunk_rows 6000
+\end{lstlisting}
+
+\subsection{预期输出与检查}
+
+\begin{lstlisting}
+outputs/
+|-- dataset1.csv       # 61,051 rows, 100 scores per row
+|-- dataset2.csv       # 153,420 rows, 100 scores per row
+|-- metadata.json
+`-- result.zip
+\end{lstlisting}
+
+\begin{lstlisting}[language=bash]
+unzip -l outputs/result.zip
+wc -l outputs/dataset1.csv outputs/dataset2.csv
+\end{lstlisting}
+
+每行应恰好包含 100 个有限浮点分数；行内最小值约为 0、最大值约为 1；压缩包根目录只包含 \texttt{dataset1.csv} 和 \texttt{dataset2.csv}。
+
+\section{合规与独立复现声明}
+\label{sec:compliance}
+
+\begin{itemize}
+  \item 训练只使用 \texttt{train.csv} 中公开的历史边。
+  \item 测试文件只使用 \texttt{src}、\texttt{time} 和 \texttt{c1--c100} 候选集合。
+  \item 测试候选频次、时间窗口和源--候选共现均为无标签统计，不包含真实目标。
+  \item 验证真实目标来自训练边的严格时间后移切分，不使用未来边构建历史特征。
+  \item 最终 V69 不读取其他队伍代码、未公开标注或外部提交预测。
+  \item V71--V94 融合实验不属于本复现方案，仓库中不包含这些结果或逻辑。
+\end{itemize}
+
+\section{代码结构与算法对应关系}
+
+\begin{tabularx}{\textwidth}{p{4.0cm}Y}
+\toprule
+文件 & 作用 \\
+\midrule
+\path{code/main.py} & 数据下载与读取、时间验证、历史索引、双向 SVD、特征构建、XGBRanker 训练、分块预测及结果打包。 \\
+\path{code/config.json} & 最终 V69 的固定参数快照和本地验证指标。 \\
+\path{code/run.sh} & Ubuntu 环境下一键复现入口。 \\
+\path{code/check_environment.py} & Python、Jittor、XGBoost 等依赖版本检查。 \\
+\path{records/final_metrics.json} & 最终指标、特征数与输出行数记录。 \\
+\path{records/reproduction.log} & 完整训练过程中的阶段日志。 \\
+\path{docs/复现说明.md} & 精简的命令行复现与故障排查说明。 \\
+\bottomrule
+\end{tabularx}
+
+\section{常见问题}
+
+\begin{itemize}
+  \item \textbf{GPU 训练失败：}代码会自动退回 CPU \texttt{hist}，结果逻辑不变，但运行时间明显增加。
+  \item \textbf{数据下载失败：}手动将官方数据保存为 \path{data/track1_data.zip}，或直接解压为规定目录结构。
+  \item \textbf{内存不足：}降低 \texttt{--ranker\_chunk\_rows}；完整复现仍建议至少 32 GB 内存。
+  \item \textbf{输出 ZIP 未生成：}确认两个数据集 CSV 都已生成；代码不会为单个数据集自动打包最终结果。
+  \item \textbf{依赖版本告警：}优先使用仓库中固定的 \path{requirements.txt}，尤其是 XGBoost 2.1.4。
+\end{itemize}
+
+\section{结论}
+
+最终方案的核心并非某一个单独模型，而是四层逻辑的闭环：严格时间验证保证优化方向可信；候选行模拟使本地训练和正式评测一致；显式图统计与双向低秩表示共同覆盖记忆和泛化；数据集特定的特征筛选与容量控制减少过拟合。V69 因此能够在不依赖外部提交和测试标签的前提下，从原始训练数据完整重建模型和结果文件。
+
+\end{document}

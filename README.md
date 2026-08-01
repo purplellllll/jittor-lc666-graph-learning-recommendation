@@ -40,7 +40,8 @@ GitHub 仓库名受平台限制只能使用 ASCII 字符，中文项目名保留
 │   ├── check_environment.py    # 环境与依赖版本检查
 │   └── config.json             # 最终 V69 参数快照
 ├── docs/
-│   └── 复现说明.md
+│   ├── 复现说明.md
+│   └── 正式赛算法与复现说明.tex  # 完整算法、优化逻辑与复现说明 LaTeX 源文件
 ├── records/
 │   ├── final_metrics.json      # 最终本地指标与输出行数
 │   └── reproduction.log        # dataset1 完整训练日志
@@ -133,7 +134,8 @@ outputs/
 ## 说明材料
 
 - 命令行与故障排查：`docs/复现说明.md`
-- PDF 说明和最终审核 ZIP 按当前整理结果另行补充，本次仓库提交暂不包含。
+- 完整算法、优化逻辑与复现说明：`docs/正式赛算法与复现说明.tex`
+- PDF 说明和最终审核 ZIP 按当前整理结果另行补充，本次仓库提交暂不包含 PDF。
 
 ## 许可证
 
