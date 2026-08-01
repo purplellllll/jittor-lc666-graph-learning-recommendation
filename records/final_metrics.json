@@ -1,20 +1,42 @@
-﻿{
-    "started_from":  "V69 dataset1 V65 1200 trees full retrain + V62 dataset2 reuse",
-    "result_zip":  "formal_track1\\result_v69_d1v65_1200_d2v62_local.zip",
-    "dataset1":  {
-                     "profile":  "v65",
-                     "validation_mrr":  0.84561685589832847,
-                     "previous_v66_mrr":  0.845094,
-                     "gain_vs_v66":  0.0005228558983285
-                 },
-    "dataset2":  {
-                     "source":  "V62 reused dataset2.csv",
-                     "validation_mrr":  0.54960017378450332
-                 },
-    "local_total_mrr":  1.3952170296828319,
-    "validated":  {
-                      "zip_test":  "passed",
-                      "dataset1_lines":  61051,
-                      "dataset2_lines":  153420
-                  }
+{
+  "selected_version": "V83 high-score dual-branch submission",
+  "leaderboard": {
+    "competition": "Jittor-7 Track 1",
+    "stage_id": 585,
+    "board": "A",
+    "team": "lc666",
+    "score": 1.4591,
+    "rank_when_verified": 16,
+    "verified_at": "2026-08-01 Asia/Shanghai"
+  },
+  "primary_branch_validation": {
+    "version": "V69",
+    "dataset1_mrr": 0.8456168558983285,
+    "dataset2_mrr": 0.5496001737845033,
+    "total_mrr": 1.3952170296828319,
+    "note": "This is the local temporal validation result of the primary branch, not the final leaderboard score."
+  },
+  "final_routing": {
+    "dataset1.csv": "V69 primary temporal-graph ranker",
+    "dataset2.csv": "complementary prediction branch"
+  },
+  "validated": {
+    "zip_test": "passed",
+    "archive_members": ["dataset1.csv", "dataset2.csv"],
+    "dataset1_lines": 61051,
+    "dataset2_lines": 153420,
+    "columns_per_row": 100
+  },
+  "artifact": {
+    "local_path": "formal_track1/result_v83_d1v69_d2open.zip",
+    "bytes": 52230691,
+    "sha256": "5b9e61fd7ebdb20178b45ae787c2498eaa5ac019081a31ff21ef2475acdc7e6b",
+    "dataset1_sha256": "829b6877d8a4663f512005e4d1d431d906991c517bb3708e03a99b161cdb7ee5",
+    "dataset2_sha256": "a56c257f97710bbe8714fcd6d23b1fb4e5b7ea528d2404011457d452f044fb4a"
+  },
+  "complementary_branch": {
+    "expected_local_path": "data/complementary_result.zip",
+    "archived_source_sha256": "974582aa2f8f156bbe7f539487450e3e1d7ca75cfaec6027ee2999ad53fdb461",
+    "dataset2_sha256": "a56c257f97710bbe8714fcd6d23b1fb4e5b7ea528d2404011457d452f044fb4a"
+  }
 }

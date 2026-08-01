@@ -2008,7 +2008,7 @@ def zip_result(output_dir: Path, result_zip: Path):
 
 
 def apply_reproduction_preset(args, dataset_name: str):
-    """Apply the exact independently reproducible V69 configuration."""
+    """Apply the exact V69 primary-branch configuration."""
     if args.preset != "final":
         return
     if dataset_name == "dataset1":
@@ -2042,7 +2042,7 @@ def main():
         "--preset",
         choices=["final", "custom"],
         default="final",
-        help="final reproduces V69 with dataset-specific settings; custom uses the explicit ranker flags",
+        help="final reproduces the V69 primary branch; custom uses the explicit ranker flags",
     )
     parser.add_argument("--chunk_rows", type=int, default=12000)
     parser.add_argument("--val_chunk_rows", type=int, default=8000)

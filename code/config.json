@@ -1,37 +1,53 @@
 {
-  "preset": "final",
+  "preset": "high_score_v83",
   "seed": 20260525,
-  "candidate_mode": "row",
-  "eval_candidate_mode": "row",
-  "position_features": false,
-  "svd": {
-    "dimension": 32,
-    "iterations": 5,
-    "directions": ["forward", "reverse"]
+  "leaderboard": {
+    "board": "A",
+    "score": 1.4591,
+    "verified_on": "2026-08-01"
   },
-  "xgboost": {
-    "objective": "rank:ndcg",
-    "eval_metric": "ndcg@10",
-    "max_depth": 5,
-    "learning_rate": 0.032,
-    "subsample": 0.88,
-    "colsample_bytree": 0.9,
-    "min_child_weight": 20.0,
-    "reg_lambda": 4.0,
-    "reg_alpha": 0.0
+  "primary_branch": {
+    "name": "V69 temporal-graph ranker",
+    "candidate_mode": "row",
+    "eval_candidate_mode": "row",
+    "position_features": false,
+    "svd": {
+      "dimension": 32,
+      "iterations": 5,
+      "directions": ["forward", "reverse"]
+    },
+    "xgboost": {
+      "objective": "rank:ndcg",
+      "eval_metric": "ndcg@10",
+      "max_depth": 5,
+      "learning_rate": 0.032,
+      "subsample": 0.88,
+      "colsample_bytree": 0.9,
+      "min_child_weight": 20.0,
+      "reg_lambda": 4.0,
+      "reg_alpha": 0.0
+    },
+    "dataset1": {
+      "feature_profile": "v65",
+      "selected_features": 167,
+      "trees": 1200,
+      "ranker_blend_alpha": 0.95,
+      "validation_mrr": 0.8456168558983285
+    },
+    "dataset2": {
+      "feature_profile": "v61",
+      "selected_features": 105,
+      "trees": 850,
+      "ranker_blend_alpha": 1.0,
+      "validation_mrr": 0.5496001737845033
+    },
+    "local_validation_total": 1.3952170296828319
   },
-  "dataset1": {
-    "feature_profile": "v65",
-    "selected_features": 167,
-    "trees": 1200,
-    "ranker_blend_alpha": 0.95,
-    "validation_mrr": 0.8456168558983285
-  },
-  "dataset2": {
-    "feature_profile": "v61",
-    "selected_features": 105,
-    "trees": 850,
-    "ranker_blend_alpha": 1.0,
-    "validation_mrr": 0.5496001737845033
+  "ensemble": {
+    "strategy": "dataset-aware dual-branch routing",
+    "dataset1_source": "primary_branch",
+    "dataset2_source": "complementary_branch",
+    "complementary_archive_sha256": "974582aa2f8f156bbe7f539487450e3e1d7ca75cfaec6027ee2999ad53fdb461",
+    "final_archive_sha256": "5b9e61fd7ebdb20178b45ae787c2498eaa5ac019081a31ff21ef2475acdc7e6b"
   }
 }

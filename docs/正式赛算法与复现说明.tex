@@ -64,7 +64,7 @@
 \begin{minipage}{0.88\textwidth}
 \colorbox{softblue}{%
   \parbox{0.94\textwidth}{
-    \textbf{方案摘要：}将任务建模为时间有向图上的候选边排序。首先以训练历史构造边频次、时效性、转移、跳跃转移、节点窗口和无标签候选分布特征；随后在正向图与反向图上提取时间加权的低秩表示；最后使用 XGBRanker 学习每个查询行内部 100 个候选节点的相对次序。最终 V69 方案针对两个数据集分别选择特征子集、树数和混合系数，在本地严格时间验证上取得合计 MRR 1.3952170297。
+    \textbf{方案摘要：}将任务建模为时间有向图上的候选边排序。主分支以训练历史构造边频次、时效性、转移、跳跃转移、节点窗口和无标签候选分布特征，在正向图与反向图上提取时间加权低秩表示，再用 XGBRanker 学习每个查询行内部 100 个候选节点的相对次序。V69 主分支本地时间验证 MRR 为 1.3952170297；最终 V83 进一步使用数据集感知的双分支路由，dataset1 保留主分支，dataset2 选择互补预测分支，A 榜成绩为 1.4591。
   }}
 \end{minipage}
 \end{center}
@@ -126,7 +126,9 @@ q_i=(u_i,t_i,\mathcal{C}_i),\qquad
   \item 为每个 $(u,t,c)$ 候选三元组生成 180 维原始特征，并按数据集选择特征子集；
   \item 以每个查询行为一个 group，训练目标为 \texttt{rank:ndcg} 的 XGBRanker；
   \item 将排序器分数与稳定规则基线按验证确定的系数混合；
-  \item 使用完整训练历史重建全部索引，分块预测两个数据集，逐行归一化并打包结果。
+  \item 使用完整训练历史重建全部索引，分块生成 V69 主分支的两个数据集预测；
+  \item 校验第二预测分支的 ZIP 完整性、候选列数、行数、有限值与文件指纹；
+  \item 根据数据集级验证结论执行分支路由：dataset1 取主分支，dataset2 取互补分支，再打包最终结果。
 \end{enumerate}
 
 用函数关系表示，最终候选分数为
@@ -135,6 +137,16 @@ s_{i,j}=\alpha_d\,\widetilde{s}^{\text{ranker}}_{i,j}
 +(1-\alpha_d)\,\widetilde{s}^{\text{base}}_{i,j},
 \]
 其中 $d$ 表示数据集，波浪号表示在查询行内执行 min--max 归一化。dataset1 的 $\alpha_1=0.95$，dataset2 的 $\alpha_2=1.00$。
+
+上式得到主分支分数。最终提交分数为
+\[
+s^{\mathrm{final}}_{d,i,j}=
+\begin{cases}
+s^{\mathrm{graph}}_{i,j}, & d=\mathrm{dataset1},\\
+s^{\mathrm{comp}}_{i,j}, & d=\mathrm{dataset2},
+\end{cases}
+\]
+其中 $s^{\mathrm{comp}}$ 是互补预测分支对同一 100 候选集合给出的排序分数。最终选择在数据集层完成，不把两个尺度不同的原始分数直接相加。
 
 \section{时间验证设计}
 
@@ -238,7 +250,7 @@ A\approx U_k\Sigma_kV_k^{\top},\qquad k=32.
 
 候选在输入行中的列位置不是语义特征，最终方案明确关闭 \texttt{pos\_norm} 和 \texttt{inv\_pos}，避免模型学习偶然的候选排列偏差。dataset1 使用 v65 配置，从 180 维中选择 167 维；dataset2 使用更精简的 v61 配置，选择 105 维，以减轻较稀疏或分布不同的数据上冗余特征带来的过拟合。
 
-\section{排序学习与分数融合}
+\section{排序学习与双分支集成}
 
 \subsection{XGBRanker}
 
@@ -269,6 +281,43 @@ GPU 可用时使用 CUDA 上的 \texttt{hist}；GPU 失败时自动退回 CPU \t
 
 排序器输出与 V18 基线均在每行归一化后再混合。dataset1 保留 5\% 基线，可以降低树模型在极端稀疏查询上的波动；dataset2 的最优设置为纯排序器输出。
 
+\subsection{互补预测分支的排序空间校准}
+
+第二预测分支同样对每行 100 个候选给出分数，但两个分支的绝对尺度不可直接比较。开发阶段先把分数转换为行内名次 $r^{(g)}_{ij}$ 与 $r^{(c)}_{ij}$，再比较下列尺度不敏感的集成形式：
+
+\begin{align*}
+s^{\mathrm{RR}}_{ij}
+&=\frac{w}{r^{(g)}_{ij}}+\frac{1-w}{r^{(c)}_{ij}},\\
+s^{\mathrm{RRF}}_{ij}
+&=\frac{w}{k+r^{(g)}_{ij}}+\frac{1-w}{k+r^{(c)}_{ij}},\\
+s^{\mathrm{Borda}}_{ij}
+&=w\frac{101-r^{(g)}_{ij}}{100}+(1-w)\frac{101-r^{(c)}_{ij}}{100},\\
+s^{\mathrm{RP}}_{ij}
+&=-\left(w\log r^{(g)}_{ij}+(1-w)\log r^{(c)}_{ij}\right).
+\end{align*}
+
+此外比较了行内 min--max 归一化加权和。dataset1 的候选权重主要落在主分支 $0.80$--$0.90$，dataset2 的主分支权重主要落在 $0.15$--$0.25$；这说明两个数据集的优势来源不同，也为最终的数据集级路由提供了证据。
+
+\subsection{置信度门控实验}
+
+为了只在少量强分歧行借用互补信息，定义分支置信度
+\[
+q_i=\frac{s_{i,(1)}-s_{i,(2)}}{\operatorname{std}(s_i)+\varepsilon},
+\]
+其中 $s_{i,(1)}$、$s_{i,(2)}$ 为该行前两名分数。对两个分支的 $q_i$ 做稳健中心化和 sigmoid 校准，只在 top-1 不一致的行上，根据置信度差选择约 3\%、5\% 或 8\% 的候选行切换分支。该方法用于验证互补性确实存在，但门控阈值会增加隐藏测试分布漂移风险，因此未作为最终默认方案。
+
+\subsection{最终数据集感知路由}
+
+实验表明，dataset1 应最大程度保留 V69 主分支，而 dataset2 更适合保留互补分支的完整排序。最终 V83 不再为每一行估计复杂权重，而采用确定性路由：
+
+\begin{itemize}
+  \item dataset1：选择 V69 的 v65/1200-tree 输出；
+  \item dataset2：选择互补预测分支的原始输出；
+  \item 打包前对两个选中成员逐行检查 100 列有限浮点数，并核对 SHA256。
+\end{itemize}
+
+这种做法的关键不是简单拼接文件，而是先通过排序空间实验识别每个数据集的优势分支，再把分支选择固化为可审计、可重复的推理路由。
+
 \section{优化演进与最终取舍}
 
 整个优化过程围绕“验证分布一致性、图结构表达、过拟合控制、数据集差异化”逐步推进：
@@ -288,31 +337,33 @@ V25--V33 & 引入 XGBoost 排序学习，扩展绝对/相对特征；比较含�
 V34--V43 & 加入长历史、共同邻居、方向 motif、两跳/跳跃关系，并进行特征子集筛选。 & 图特征越多不一定越好；需要按验证表现保留稳定特征，控制稀疏高阶模式的噪声。 \\
 V45--V58 & 调整验证行构造、训练组数、树数和 NDCG 目标，使训练候选分布更接近正式测试。 & 从整行候选采样比独立负采样更可靠；模型容量要与验证规模配套。 \\
 V59--V61 & 加入 32 维正向 SVD、反向 SVD，并为 dataset2 形成精简的 v61 特征集。 & 低秩表示补足显式统计的泛化能力；有向图需要分别表达入边和出边角色。 \\
-V62--V69 & 对 dataset1 采用更丰富的 v65 特征并增至 1200 棵树；dataset2 保持 v61 与 850 棵树；独立确定混合系数。 & 两个数据集的稀疏度和主导信号不同，单一统一配置不如数据集特定配置。最终 V69 是可独立复现、无需外部提交的方案。 \\
-V71--V94 & 试验 reciprocal-rank、Borda、RRF、门控和外部结果融合。 & 这些是赛后/附加融合探索，依赖其他提交结果，不纳入审核复现包，也不属于最终独立方案。 \\
+V62--V69 & 对 dataset1 采用更丰富的 v65 特征并增至 1200 棵树；dataset2 保持 v61 与 850 棵树；独立确定混合系数。 & 两个数据集的稀疏度和主导信号不同，单一统一配置不如数据集特定配置。V69 成为最终主模型分支。 \\
+V71--V82 & 在候选名次空间试验 reciprocal rank、Borda、RRF、rank product、自适应权重和归一化加权。 & 排名变换消除了两个预测分支的分值尺度差异；dataset1 应偏向主分支，dataset2 应偏向互补分支。 \\
+V83--V94 & 比较数据集级路由、3\%--8\% 置信度门控以及不同排序校准组合。 & 复杂门控存在阈值漂移风险；V83 直接选择每个数据集的优势分支，结构最简单，成为高分归档版本。 \\
 \bottomrule
 \end{longtable}
 
-最终取舍的逻辑不是简单“堆更多特征”，而是：先用时间验证保证评价可信，再让候选采样贴近测试分布；随后通过图统计和双向 SVD补充表达；最后针对两个数据集分别控制特征复杂度和树模型容量。
+最终取舍的逻辑不是简单“堆更多特征”，而是：先用时间验证保证评价可信，再让候选采样贴近测试分布；随后通过图统计和双向 SVD 补充表达；最后同时在模型容量和预测分支两个层面做数据集特定选择。
 
-\section{最终 V69 配置与结果}
+\section{最终 V83 配置与结果}
 
 \begin{table}[htbp]
 \centering
-\caption{最终独立复现配置}
+\caption{主分支配置与最终路由}
 \label{tab:final}
 \begin{tabularx}{\textwidth}{lC{2.0cm}C{1.55cm}C{1.7cm}C{1.7cm}Y}
 \toprule
-数据集 & 特征配置 & 树数 & SVD & 混合系数 & 本地 MRR \\
+数据集 & 主分支配置 & 树数 & SVD & 最终来源 & 指标记录 \\
 \midrule
-dataset1 & v65，167/180 维 & 1200 & 正/反各 32 维 & 0.95 & 0.8456168559 \\
-dataset2 & v61，105/180 维 & 850 & 正/反各 32 维 & 1.00 & 0.5496001738 \\
-合计 & V69 & --- & --- & --- & \textbf{1.3952170297} \\
+dataset1 & v65，167/180 维 & 1200 & 正/反各 32 维 & V69 主分支 & 本地 MRR 0.8456168559 \\
+dataset2 & v61，105/180 维 & 850 & 正/反各 32 维 & 互补分支 & 主分支本地 MRR 0.5496001738 \\
+主分支合计 & V69 & --- & --- & --- & 本地 MRR 1.3952170297 \\
+最终提交 & V83 & --- & --- & 数据集感知路由 & \textbf{A 榜 1.4591} \\
 \bottomrule
 \end{tabularx}
 \end{table}
 
-这里的本地 MRR 来自固定随机种子和代码所述时间验证过程，用于复现模型选择逻辑；它不是对隐藏测试标签的计算结果。
+这里的 V69 本地 MRR 来自固定随机种子和代码所述时间验证过程，用于复现主分支模型选择逻辑；A 榜 1.4591 才是最终 V83 的提交成绩。两者来自不同数据，不能把 1.3952170297 写成最终榜单分数。
 
 \section{工程实现与资源优化}
 
@@ -330,7 +381,7 @@ pair 和 transition 使用整数复合键
 
 \subsection{确定性与失败回退}
 
-主随机种子固定为 20260525，NumPy 采样、SVD 和 XGBoost 均使用确定的种子。程序在 GPU 训练异常时重建 CPU 模型继续训练；只有 dataset1 和 dataset2 两个结果文件均存在时才生成 \texttt{result.zip}，降低半成品被误提交的风险。
+主随机种子固定为 20260525，NumPy 采样、SVD 和 XGBoost 均使用确定的种子。程序在 GPU 训练异常时重建 CPU 模型继续训练；只有 dataset1 和 dataset2 两个结果文件均存在且通过全量矩阵检查时才生成 \texttt{result.zip}，降低半成品被误提交的风险。高分归档中 dataset1 成员 SHA256 为 \texttt{829b6877...cdb7ee5}，dataset2 成员 SHA256 为 \texttt{a56c257f...f044fb4a}，最终 ZIP SHA256 为 \texttt{5b9e61fd...cdc7e6b}；完整值见 \path{records/final_metrics.json}。
 
 \section{复现环境}
 
@@ -360,21 +411,27 @@ data/track1/
 
 也可以提前把官方压缩包放在 \path{data/track1_data.zip}。代码会在数据目录缺失时从脚本中固定的主办方地址下载并解压。
 
+逐字节复现最终 V83 还需将归档的互补预测分支放为 \path{data/complementary_result.zip}。其 SHA256 必须为
+\begin{lstlisting}
+974582aa2f8f156bbe7f539487450e3e1d7ca75cfaec6027ee2999ad53fdb461
+\end{lstlisting}
+该分支作为固定模型输出输入；集成程序校验其文件指纹和全部预测矩阵，但不把其内部训练过程声明为 \path{code/main.py} 的产物。
+
 \subsection{一键运行}
 
 \begin{lstlisting}[language=bash]
 chmod +x code/run.sh
+chmod +x code/run_primary.sh
 bash code/run.sh
 \end{lstlisting}
 
-等价的显式命令为：
+脚本先调用 \path{code/run_primary.sh} 生成 \path{outputs/primary_v69.zip}，再执行：
 
 \begin{lstlisting}[language=bash]
-python code/main.py \
-  --preset final \
-  --data_dir data/track1 \
-  --zip_path data/track1_data.zip \
-  --output_dir outputs \
+python code/ensemble.py \
+  --primary_result outputs/primary_v69.zip \
+  --complementary_result data/complementary_result.zip \
+  --output_dir outputs/high_score \
   --result_zip outputs/result.zip
 \end{lstlisting}
 
@@ -388,20 +445,24 @@ bash code/run.sh --ranker_chunk_rows 800 --chunk_rows 6000
 
 \begin{lstlisting}
 outputs/
-|-- dataset1.csv       # 61,051 rows, 100 scores per row
-|-- dataset2.csv       # 153,420 rows, 100 scores per row
-|-- metadata.json
+|-- primary_v69.zip
+|-- high_score/
+|   |-- dataset1.csv       # 61,051 rows, 100 scores per row
+|   |-- dataset2.csv       # 153,420 rows, 100 scores per row
+|   `-- ensemble_metadata.json
 `-- result.zip
 \end{lstlisting}
 
 \begin{lstlisting}[language=bash]
 unzip -l outputs/result.zip
-wc -l outputs/dataset1.csv outputs/dataset2.csv
+wc -l outputs/high_score/dataset1.csv outputs/high_score/dataset2.csv
 \end{lstlisting}
 
 每行应恰好包含 100 个有限浮点分数；行内最小值约为 0、最大值约为 1；压缩包根目录只包含 \texttt{dataset1.csv} 和 \texttt{dataset2.csv}。
 
-\section{合规与独立复现声明}
+历史 V83 ZIP 的整包 SHA256 记录了当时的容器时间戳。重新打包后容器 SHA256 可以变化；预测版本以两个 CSV 成员的 SHA256 为准，\path{code/ensemble.py} 默认强制核对完整成员指纹。
+
+\section{合规与复现边界}
 \label{sec:compliance}
 
 \begin{itemize}
@@ -409,8 +470,10 @@ wc -l outputs/dataset1.csv outputs/dataset2.csv
   \item 测试文件只使用 \texttt{src}、\texttt{time} 和 \texttt{c1--c100} 候选集合。
   \item 测试候选频次、时间窗口和源--候选共现均为无标签统计，不包含真实目标。
   \item 验证真实目标来自训练边的严格时间后移切分，不使用未来边构建历史特征。
-  \item 最终 V69 不读取其他队伍代码、未公开标注或外部提交预测。
-  \item V71--V94 融合实验不属于本复现方案，仓库中不包含这些结果或逻辑。
+  \item V69 主分支可从官方数据完整重建，代码不访问隐藏测试标签。
+  \item V83 的第二预测分支以固定模型输出归档；\path{code/ensemble.py} 校验其 SHA256、ZIP CRC、行数、列数和有限值，并复现最终推理路由。
+  \item 文档不把第二分支的内部训练过程误写为主模型实现；可验证范围是主分支完整训练，以及最终分支选择、校验和打包。
+  \item 本地 V69 MRR 与最终 V83 榜单成绩分开报告，避免混淆验证集指标与隐藏测试指标。
 \end{itemize}
 
 \section{代码结构与算法对应关系}
@@ -419,12 +482,15 @@ wc -l outputs/dataset1.csv outputs/dataset2.csv
 \toprule
 文件 & 作用 \\
 \midrule
-\path{code/main.py} & 数据下载与读取、时间验证、历史索引、双向 SVD、特征构建、XGBRanker 训练、分块预测及结果打包。 \\
-\path{code/config.json} & 最终 V69 的固定参数快照和本地验证指标。 \\
-\path{code/run.sh} & Ubuntu 环境下一键复现入口。 \\
+\path{code/main.py} & 数据下载与读取、时间验证、历史索引、双向 SVD、特征构建、XGBRanker 训练、分块预测及 V69 主分支打包。 \\
+\path{code/ensemble.py} & V83 数据集感知双分支路由、全量矩阵校验、成员指纹记录和最终 ZIP 打包。 \\
+\path{code/config.json} & V69 主分支参数、V83 路由、榜单成绩与产物指纹。 \\
+\path{code/run.sh} & Ubuntu 环境下最终高分版本一键入口。 \\
+\path{code/run_primary.sh} & 只复现 V69 主分支的入口。 \\
 \path{code/check_environment.py} & Python、Jittor、XGBoost 等依赖版本检查。 \\
 \path{records/final_metrics.json} & 最终指标、特征数与输出行数记录。 \\
-\path{records/reproduction.log} & 完整训练过程中的阶段日志。 \\
+\path{records/artifact_audit.md} & 高分 ZIP、成员来源、哈希、行列数及其他候选版本的审计记录。 \\
+\path{records/reproduction.log} & V69 dataset1 完整训练日志；末尾打包错误来自隔离运行未同时生成 dataset2。 \\
 \path{docs/复现说明.md} & 精简的命令行复现与故障排查说明。 \\
 \bottomrule
 \end{tabularx}
@@ -435,12 +501,14 @@ wc -l outputs/dataset1.csv outputs/dataset2.csv
   \item \textbf{GPU 训练失败：}代码会自动退回 CPU \texttt{hist}，结果逻辑不变，但运行时间明显增加。
   \item \textbf{数据下载失败：}手动将官方数据保存为 \path{data/track1_data.zip}，或直接解压为规定目录结构。
   \item \textbf{内存不足：}降低 \texttt{--ranker\_chunk\_rows}；完整复现仍建议至少 32 GB 内存。
-  \item \textbf{输出 ZIP 未生成：}确认两个数据集 CSV 都已生成；代码不会为单个数据集自动打包最终结果。
+  \item \textbf{互补分支缺失：}将归档文件放到 \path{data/complementary_result.zip}，或设置环境变量 \texttt{COMPLEMENTARY\_RESULT\_ZIP}。
+  \item \textbf{文件指纹不一致：}停止提交并核对输入归档；可在 \path{records/final_metrics.json} 查询完整 SHA256。
+  \item \textbf{输出 ZIP 未生成：}根据 \path{code/ensemble.py} 的错误信息检查 ZIP 成员、行数、列数和非法浮点数。
   \item \textbf{依赖版本告警：}优先使用仓库中固定的 \path{requirements.txt}，尤其是 XGBoost 2.1.4。
 \end{itemize}
 
 \section{结论}
 
-最终方案的核心并非某一个单独模型，而是四层逻辑的闭环：严格时间验证保证优化方向可信；候选行模拟使本地训练和正式评测一致；显式图统计与双向低秩表示共同覆盖记忆和泛化；数据集特定的特征筛选与容量控制减少过拟合。V69 因此能够在不依赖外部提交和测试标签的前提下，从原始训练数据完整重建模型和结果文件。
+最终方案的核心并非某一个单独模型，而是五层逻辑的闭环：严格时间验证保证优化方向可信；候选行模拟使本地训练和正式评测一致；显式图统计与双向低秩表示共同覆盖记忆和泛化；数据集特定的特征筛选与容量控制减少过拟合；最后通过排序空间校准实验识别不同数据集的优势预测分支，并固化为确定性路由。V69 是可完整训练复现的主分支，V83 是经过文件指纹与输出结构审计的最终高分版本，A 榜成绩为 1.4591。
 
 \end{document}
